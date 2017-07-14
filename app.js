@@ -8,7 +8,7 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var passport = require('passport');
-// strategy for git
+var SlackStrategy = require('passport-slack');
 var validator = require('express-validator');
 var mongoose = require('mongoose');
 var session = require('express-session');
@@ -65,7 +65,12 @@ mongoose.connection.on('error', function() {
   process.exit(1);
 });
 
-// strategy
+passport.use(new SlackStrategy({
+  clientID: "137826509296.214032048054",
+  clientSecret: "35d5d477a7a7f1d601182491a33ab744",
+}, function(accessToken, refreshToken, profile, done) {
+  
+}))
 // serialize
 // deserialize
 
