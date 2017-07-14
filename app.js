@@ -70,7 +70,8 @@ mongoose.connection.on('error', function() {
 passport.use(new SlackStrategy ({
   clientID: "137826509296.214032048054",
   clientSecret: "35d5d477a7a7f1d601182491a33ab744",
-  callbackURL: "http://localhost:3000/auth/slack/callback"
+  callbackURL: "http://localhost:3000/auth/slack/callback",
+  scope: ['identity.basic', 'identity.email', 'identity.avatar', 'identity.team']
 }, function(accessToken, refreshToken, profile, done) {
   if (taEmail.indexOf(profile.email)) {
     Ta.findOne({displayName: profile.first_name + " " + profile.last_name}, function(err, ta) {
