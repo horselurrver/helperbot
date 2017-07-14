@@ -1,18 +1,37 @@
-<button class="logout">Logout</button>
+<a href="#" class="logout" role="button">Logout</a>
 <br/>
-<center><div class="tas">
-  <img class="taPic" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTZdaIj40vlNy5-KRzeRtBc4nQO3qohNEQdfJydorNEXmUVwVyn"></img>
-  <p>Bob Bob</p>
-</div></center>
+<div class="tas" style="margin-left:10%;">
+  <center>
+      <div style="display:inline-block;margin-right:5%">
+      <img class="taPic" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTZdaIj40vlNy5-KRzeRtBc4nQO3qohNEQdfJydorNEXmUVwVyn"></img>
+      <p class="text-with-img">Bob Bob <i class="fa fa-circle" aria-hidden="true"></i></p>
+    </div>
+    <div style="display:inline-block;margin-right:5%">
+      <img class="taPic" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTZdaIj40vlNy5-KRzeRtBc4nQO3qohNEQdfJydorNEXmUVwVyn"></img>
+      <p class="text-with-img">Bob Bob <i class="fa fa-circle" aria-hidden="true"></i></p>
+    </div>
+    <div style="display:inline-block;margin-right:5%">
+      <img class="taPic" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTZdaIj40vlNy5-KRzeRtBc4nQO3qohNEQdfJydorNEXmUVwVyn"></img>
+      <p class="text-with-img">Bob Bob <i class="fa fa-circle" aria-hidden="true"></i></p>
+    </div>
+  </center>
+</div>
 <br/>
 <br/>
+<!-- Rounded switch -->
+<!-- Rounded switch -->
+<label class="switch">
+  <input type="checkbox">
+  <span class="slider round"></span>
+</label>
+
 <center><div class="alert alert-success" style="width:50%">
   <strong>Heads up!</strong> You've been assigned to TA.
 </div></center>
 <div class="queueBody" style="height:300px;width:50%;overflow-y:scroll">
   <div class="panel panel-default">
-    <div class="panel-heading"><strong>1.</strong>&nbsp;&nbsp;Username <i style="color:red;float:right" class="fa fa-times-circle" aria-hidden="true"></i></div>
-    <div class="panel-body">Panel Content</div>
+    <div class="panel-heading"><strong>1.</strong>&nbsp;&nbsp;Username <i id="cancel" style="color:red;float:right" class="fa fa-times-circle" aria-hidden="true"></i></div>
+    <div class="panel-body">Panel Content <button id="getPass" style="float:right" class="btn btn-primary">Get Pass</button></div>
   </div>
   <div class="panel panel-default">
     <div class="panel-heading"><strong>1.</strong>&nbsp;&nbsp;Username at Table Number</div>
@@ -34,7 +53,7 @@
 <br/>
 
 <center><form class="form-inline">
-  <div class="input-group" style="width:30%">
+  <div class="input-group" style="width:20%">
     <input type="text" class="form-control" placeholder="(Optional) Brief description">
   </div>
   <div class="btn-group">
@@ -49,5 +68,29 @@
       <li><a href="#fakelink">Clarification</a></li>
     </ul>
   </div>
-  <button type="submit" style="border:none;color:white;background-color:#ff585b"class="btn btn-default">Submit</button>
+  <button id="addToQueue" class="btn btn-primary">Add to Queue</button>
+  <div class="checkbox">
+    <label style="color:white"><input type="checkbox" value="usePass"> Use Pass</label>
+  </div>
 </form></center>
+
+<script>
+  $('#addToQueue').on('click', function(evt) {
+    console.log('Add to queue!');
+  });
+
+  $('#cancel').on('click', function(evt) {
+    console.log('Cancel!');
+  });
+
+  $('#getPass').on('click', function(evt) {
+    console.log('Get pass!');
+  });
+
+  setInterval(function() {
+    var currentHour = (new Date()).getHours();
+    if (currentHour === 0) {
+      // make post request to reset
+    }
+  }, 1000*60*60);
+</script>

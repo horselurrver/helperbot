@@ -32,6 +32,11 @@ module.exports = function(passport) {
     res.render('index');
   });
 
+  router.get('/logout', function(req, res) {
+    req.logout();
+    res.redirect('/login');
+  });
+
 
   return router;
 }
