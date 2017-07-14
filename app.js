@@ -1,12 +1,26 @@
+"use strict";
+
 var express = require('express');
+var exphbs = require('express-handlebars');
 var path = require('path');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var passport = require('passport');
+// strategy for git
+var validator = require('express-validator');
+var mongoose = require('mongoose');
+var session = require('express-session');
+var MongoStore = require('connect-mongo')(session);
+mongoose.Promise = global.Promise;
 
-var index = require('./routes/index');
-var users = require('./routes/users');
+// get in auth, models, routes from different folders
+var routes = require('./routes/index');
+var auth = require('./routes/auth');
+var models = require('./models/models');
+// require specific models
+var models = require('./models/models');
 
 var app = express();
 
@@ -22,8 +36,47 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', index);
-app.use('/users', users);
+// Handlabars setup
+app.engine('hbs', exphbs({
+  extname:'hbs',
+  defaultLayout: 'main'
+}));
+app.set('view engine', '.hbs');
+
+// Express validator setup
+app.use(validator());
+
+// SESSION SETUP HERE
+// app.use(session({
+//   secret: 'to be or not to be that is the question',
+//   store: new MongoStore({mongooseConnection: mongoose.connection})
+// }));
+
+// MONGODB SETUP HERE
+if (! fs.existsSync('./env.sh')) {
+  throw new Error('env.sh file is missing');
+}
+if (! process.env.MONGODB_URI) {
+  throw new Error("MONGODB_URI is not in the environmental variables. Try running 'source env.sh'");
+}
+mongoose.connect(process.env.MONGODB_URI);
+mongoose.connection.on('connected', function() {
+  console.log('Success: connected to MongoDb!');
+});
+mongoose.connection.on('error', function() {
+  console.log('Error connecting to MongoDb. Check MONGODB_URI in env.sh');
+  process.exit(1);
+});
+
+// strategy
+// serialize
+// deserialize
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+app.use('/', auth(passport));
+app.use('/', routes);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
