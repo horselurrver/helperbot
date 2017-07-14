@@ -115,7 +115,7 @@ passport.use(new SlackStrategy ({
       }
     });
   }
-});
+}));
 
 passport.serializeUser(function(user, done) {
   done(null, user._id);
