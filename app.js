@@ -79,7 +79,7 @@ function(accessToken, refreshToken, profile, done) {
         return done(err);
       } else if (!ta) {
         var newTA = new Ta ({
-          useranme: profile.displayName,
+          username: profile.displayName,
           available: true,
           isStudent: false
         });
