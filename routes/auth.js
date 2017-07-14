@@ -7,7 +7,9 @@ module.exports = function(passport) {
 
   router.get('/', function(req, res) {
     if (req.user) {
-      res.redirect('/index');
+      res.redirect('/index', {
+        user: req.user.username
+      });
     } else {
       res.redirect('/login');
     }
@@ -26,7 +28,9 @@ module.exports = function(passport) {
   })
 
   router.get('/index', function(req, res) {
-    res.render('index');
+    res.render('index', {
+      user: req.user.username
+    });
   });
 
   router.get('/logout', function(req, res) {

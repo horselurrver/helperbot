@@ -8,6 +8,7 @@ var queue = [];
 
 /* GET home page. */
 router.get('/', function(req, res) {
+  console.log('req.user: ' + req.user);
   if (req.user) {
     res.redirect('/index');
   } else {
@@ -20,10 +21,19 @@ router.get('/login', function(req, res) {
 });
 
 router.get('/index', function(req, res) {
-  res.render('index');
+  res.render('index', {
+    user: req.user
+  });
 });
 
+router.get('/logout', function(req, res) {
+  console.log('user: ' + req.user);
+  req.logout();
+  res.redirect('/login');
+});
 
-
+router.post('/add', function(req, res) {
+  
+});
 
 module.exports = router;
