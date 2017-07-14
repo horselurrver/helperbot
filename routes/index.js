@@ -8,11 +8,7 @@ var queue = [];
 
 /* GET home page. */
 router.get('/', function(req, res) {
-<<<<<<< HEAD
-  console.log("this is req.user", req.user);
-=======
-  console.log('req.user: ' + req.user);
->>>>>>> ea72fa61e08e1ff54cdcc18a5b396b99f555262b
+  console.log("this is req.user", req.user.username);
   if (req.user) {
     res.redirect('/index');
   } else {
