@@ -39,6 +39,23 @@ body
   background-color: #ff585b
 }
 
+.logout {
+  margin:16px;
+  font-size:16px;
+  float:right;
+  color:white;
+  border:none;
+  background-color:#0d9ed3;
+}
+
+.queueBody {
+    margin-left:25%;
+}
+
 .btn-primary:hover {
   background-color: #ff3336
+}
+
+.panel-default {
+  margin:0
 }
