@@ -7,7 +7,7 @@ module.exports = function(passport) {
 
   router.get('/', function(req, res) {
     if (req.user) {
-      res.redirect('/index', {
+      res.render('index', {
         user: req.user.username
       });
     } else {

@@ -92,7 +92,7 @@
         displayName:
       },
       success: function(resp) {
-        console.log(resp);
+        console.log(resp);// get a queue back and render everything
       }
     });
   });
@@ -109,6 +109,13 @@
     var currentHour = (new Date()).getHours();
     if (currentHour === 0) {
       // make post request to reset
+      $.ajax({
+        url:"http://localhost:3000/reset",
+        method:'get',
+        success: function(resp) {
+
+        }
+      })
     }
   }, 1000*60*60);
 </script>
