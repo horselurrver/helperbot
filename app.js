@@ -20,7 +20,9 @@ var routes = require('./routes/index');
 var auth = require('./routes/auth');
 var models = require('./models/models');
 // require specific models
-var models = require('./models/models');
+var Student = models.Student;
+var Ta = models.Ta;
+var taEmail = ["lhoong@wharton.upenn.edu", "kamran@joinhorizons.com", "syed@joinhorizons.com", "mustafa@joinhorizons.com"]; // Lisa, Kamran, Syed, Moose
 
 var app = express();
 
@@ -69,10 +71,65 @@ passport.use(new SlackStrategy({
   clientID: "137826509296.214032048054",
   clientSecret: "35d5d477a7a7f1d601182491a33ab744",
 }, function(accessToken, refreshToken, profile, done) {
-  
-}))
-// serialize
-// deserialize
+  if (taEmail.indexOf(profile.email)) {
+    Ta.findOne({displayName: profile.first_name + " " + profile.last_name}, function(err, ta) {
+      if (err) {
+        return done(err);
+      } else if (! ta) {
+        var newTA = new Ta ({
+          displayName: profile.first_name + " " + profile.last_name,
+          available: true,
+          isStudent: false
+        });
+        newTA.save(function(err) {
+          if (err) {
+            return done(err);
+          } else {
+            return done(null, newTA);
+          }
+        });
+      } else {
+        return done(null, ta);
+      }
+    });
+  } else {
+    Student.findOne({displayName: profile.first_name + " " + profile.last_name}, function(err, student) {
+      if (err) {
+        return done(err);
+      } else if (! student) {
+        var newStudent = new Student({
+          displayName: profile.first_name + " " + profile.last_name,
+          priority: 3,
+          isStudent: true
+        });
+        newStudent.save(function(err) {
+          if (err) {
+            return done(err);
+          } else {
+            return done(null, newStudent);
+          }
+        });
+      } else {
+        return done(null, studnet);
+      }
+    });
+  }
+}));
+
+passport.serializeUser(function(user, done) {
+  done(null, user._id);
+});
+
+passport.deserializeUser(function(id, done) {
+  Ta.findById(id, function(err, ta) {
+    if (ta) done(err, ta);
+    else {
+      Student.findById(id, function(err, student) {
+        done(err, studnet);
+      });
+    }
+  });
+});
 
 app.use(passport.initialize());
 app.use(passport.session());
