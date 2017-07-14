@@ -22,12 +22,12 @@ router.get('/login', function(req, res) {
 
 router.get('/index', function(req, res) {
   res.render('index', {
-    user: req.user
+    user: req.user.displayName
   });
 });
 
 router.get('/logout', function(req, res) {
-  console.log('user: ' + req.user);
+  console.log('user: ' + req.user.displayName);
   req.logout();
   res.redirect('/login');
 });
