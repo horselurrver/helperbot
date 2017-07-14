@@ -16,9 +16,9 @@
     "express-validator": "^3.2.1",
     "hbs": "~4.0.1",
     "mongoose": "^4.11.2",
-    "morgan": "~1.8.1",
+    "morgan": "^1.8.2",
     "passport": "^0.3.2",
     "passport-slack": "0.0.7",
-    "serve-favicon": "~2.4.2"
+    "serve-favicon": "^2.4.3"
   }
 }

@@ -7,6 +7,7 @@ var studentSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'TA'
   },
+  isStudent: Boolean,
   priority: Number,
   lastCancel: Date
 });
@@ -14,6 +15,7 @@ var studentSchema = new Schema({
 var taSchema = new Schema({
   displayName: String,
   available: Boolean,
+  isStudent: Boolean,
   assignedTo: {
     type: Schema.Types.ObjectId,
     ref: 'Student'
