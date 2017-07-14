@@ -73,11 +73,11 @@ passport.use(new SlackStrategy ({
   scope: "identity.basic"
 },
 function(accessToken, refreshToken, profile, done) {
-  if (taDisplayName.indexOf(profile.displayName)) {
+  if (taDisplayName.indexOf(profile.displayName) !== -1) {
     Ta.findOne({displayName: profile.displayName}, function(err, ta) {
       if (err) {
         return done(err);
-      } else if (! ta) {
+      } else if (!ta) {
         var newTA = new Ta ({
           displayName: profile.displayName,
           available: true,
