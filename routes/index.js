@@ -4,6 +4,8 @@ var models = require('../models/models')
 var mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
 
+var queue = [];
+
 /* GET home page. */
 router.get('/', function(req, res) {
   if (req.user) {
@@ -15,11 +17,11 @@ router.get('/', function(req, res) {
 
 router.get('/login', function(req, res) {
   res.render('login');
-})
+});
 
 router.get('/index', function(req, res) {
   res.render('index');
-})
+});
 
 
 

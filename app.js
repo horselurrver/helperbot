@@ -22,7 +22,7 @@ var models = require('./models/models');
 // require specific models
 var Student = models.Student;
 var Ta = models.Ta;
-var taEmail = ["lhoong@wharton.upenn.edu", "kamran@joinhorizons.com", "syed@joinhorizons.com", "mustafa@joinhorizons.com"]; // Lisa, Kamran, Syed, Moose
+var taDisplayName = ["Lisa Hoong", "Moose Paksoy", "Kamran Kara-Pabani", "Syed Mohsin"]; // Lisa, Moose, kamran, Syed
 
 var app = express();
 
@@ -70,15 +70,16 @@ mongoose.connection.on('error', function() {
 passport.use(new SlackStrategy ({
   clientID: "137826509296.214032048054",
   clientSecret: "35d5d477a7a7f1d601182491a33ab744",
-}, function(accessToken, refreshToken, profile, done) {
-  done(null, profile);
-  if (taEmail.indexOf(profile.email)) {
-    Ta.findOne({displayName: profile.first_name + " " + profile.last_name}, function(err, ta) {
+  scope: "identity.basic"
+},
+function(accessToken, refreshToken, profile, done) {
+  if (taDisplayName.indexOf(profile.displayName)) {
+    Ta.findOne({displayName: profile.displayName}, function(err, ta) {
       if (err) {
         return done(err);
       } else if (! ta) {
         var newTA = new Ta ({
-          displayName: profile.first_name + " " + profile.last_name,
+          displayName: profile.displayName,
           available: true,
           isStudent: false
         });
@@ -94,12 +95,12 @@ passport.use(new SlackStrategy ({
       }
     });
   } else {
-    Student.findOne({displayName: profile.first_name + " " + profile.last_name}, function(err, student) {
+    Student.findOne({displayName: profile.displayName}, function(err, student) {
       if (err) {
         return done(err);
       } else if (! student) {
         var newStudent = new Student({
-          displayName: profile.first_name + " " + profile.last_name,
+          displayName: profile.displayName,
           priority: 3,
           isStudent: true
         });
@@ -140,6 +141,7 @@ app.use('/', routes);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
+  console.log(req.body);
   var err = new Error('Not Found');
   err.status = 404;
   next(err);
