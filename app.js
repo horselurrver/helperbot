@@ -74,12 +74,12 @@ passport.use(new SlackStrategy ({
 },
 function(accessToken, refreshToken, profile, done) {
   if (taDisplayName.indexOf(profile.displayName) !== -1) {
-    Ta.findOne({displayName: profile.displayName}, function(err, ta) {
+    Ta.findOne({username: profile.displayName}, function(err, ta) {
       if (err) {
         return done(err);
       } else if (!ta) {
         var newTA = new Ta ({
-          displayName: profile.displayName,
+          useranme: profile.displayName,
           available: true,
           isStudent: false
         });
@@ -95,12 +95,12 @@ function(accessToken, refreshToken, profile, done) {
       }
     });
   } else {
-    Student.findOne({displayName: profile.displayName}, function(err, student) {
+    Student.findOne({username: profile.displayName}, function(err, student) {
       if (err) {
         return done(err);
       } else if (! student) {
         var newStudent = new Student({
-          displayName: profile.displayName,
+          username: profile.displayName,
           priority: 3,
           isStudent: true
         });
