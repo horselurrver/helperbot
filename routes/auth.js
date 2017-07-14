@@ -7,18 +7,19 @@ module.exports = function(passport) {
 
   router.get('/', function(req, res) {
     if (req.user) {
-      res.render('/index');
+      res.redirect('/index');
     } else {
-      res.redirect('/login')
+      res.redirect('/login');
     }
-  })
+  });
 
-  router.get('/auth/slack', passport.authorize('slack'));
+  // path to start the OAuth flow
+  router.get('/auth/slack', passport.authenticate('slack'));
+
+  // OAuth callback url
   router.get('/auth/slack/callback',
-    passport.authorize('slack', {
-    failureRedirect: '/login' }),
-    function(req, res) {
-      // Successful authentication, redirect home.
+    passport.authenticate('slack', { failureRedirect: '/login' }),
+    function(req, res){
       res.redirect('/');
     }
   );
@@ -26,6 +27,10 @@ module.exports = function(passport) {
   router.get('/login', function(req, res) {
     res.render('login');
   })
+
+  // router.get('/index', function(req, res) {
+  //   res.render('index');
+  // })
 
 
   return router;
