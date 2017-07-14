@@ -5,6 +5,14 @@ var models = require('../models/models.js');
 
 module.exports = function(passport) {
 
+  router.get('/', function(req, res) {
+    if (req.user) {
+      res.render('/index');
+    } else {
+      res.redirect('/login')
+    }
+  })
+
   router.get('/auth/slack', passport.authenticate('slack'));
   router.get('/auth/slack/callback',
     passport.authenticate('slack', {
