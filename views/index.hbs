@@ -1,8 +1,20 @@
-<a href="#" class="logout" role="button">Logout</a>
+<a href="/logout" class="logout" role="button">Logout</a>
 <br/>
-<div class="tas" style="margin-left:10%;">
+<h1>Welcome, {{user}}!</h1>
+<div style="margin-left:25%">
+  <div style="display:inline-block;margin-right:5%;color:white;font-size:20px;">
+    <img class="taPic" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTZdaIj40vlNy5-KRzeRtBc4nQO3qohNEQdfJydorNEXmUVwVyn"> &nbsp;&nbsp;&nbsp;&nbsp;No current jobs</img>
+  </div>
+  <br/>
+  <br/>
+  <label class="switch" style="margin-left:2%">
+    <input type="checkbox">
+    <span class="slider round"></span>
+  </label>
+</div>
+<!--<div class="tas" style="margin-left:10%;">
   <center>
-      <div style="display:inline-block;margin-right:5%">
+    <div style="display:inline-block;margin-right:5%">
       <img class="taPic" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTZdaIj40vlNy5-KRzeRtBc4nQO3qohNEQdfJydorNEXmUVwVyn"></img>
       <p class="text-with-img">Bob Bob <i class="fa fa-circle" aria-hidden="true"></i></p>
     </div>
@@ -15,15 +27,12 @@
       <p class="text-with-img">Bob Bob <i class="fa fa-circle" aria-hidden="true"></i></p>
     </div>
   </center>
-</div>
+</div>-->
+
 <br/>
 <br/>
 <!-- Rounded switch -->
 <!-- Rounded switch -->
-<label class="switch">
-  <input type="checkbox">
-  <span class="slider round"></span>
-</label>
 
 <center><div class="alert alert-success" style="width:50%">
   <strong>Heads up!</strong> You've been assigned to TA.
@@ -76,7 +85,16 @@
 
 <script>
   $('#addToQueue').on('click', function(evt) {
-    console.log('Add to queue!');
+    $.ajax({
+      url: 'http://localhost:3000/add',
+      method:'post',
+      data: {
+        displayName:
+      },
+      success: function(resp) {
+        console.log(resp);
+      }
+    });
   });
 
   $('#cancel').on('click', function(evt) {

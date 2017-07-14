@@ -11,7 +11,10 @@ var studentSchema = new Schema({
     type: Boolean,
     default: true
   },
-  priority: Number,
+  priority: {
+    type: Number,
+    default: 3
+  },
   lastCancel: Date
 });
 
