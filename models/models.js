@@ -7,25 +7,50 @@ var studentSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'TA'
   },
-  isStudent: Boolean,
+  isStudent: {
+    type: Boolean,
+    default: true
+  },
   priority: Number,
   lastCancel: Date
 });
 
 var taSchema = new Schema({
   displayName: String,
-  available: Boolean,
-  isStudent: Boolean,
+  available: {
+    type: Boolean,
+    default: false
+  },
+  isStudent: {
+    type: Boolean,
+    default: false
+  },
   assignedTo: {
     type: Schema.Types.ObjectId,
     ref: 'Student'
   }
 })
 
+var requestSchema = new Schema({
+  owner: {
+    type: Schema.Types.ObjectId,
+    ref: 'Student'
+  },
+  category: {
+    type: String,
+    enum: ['Debugging', 'Concept', 'Clarification']
+  },
+  briefDesc: {
+    type: String
+  }
+});
+
 var Student = mongoose.model("Student", studentSchema);
 var Ta = mongoose.model("TA", taSchema);
+var Request = mongoose.model("Request", requestSchema);
 
 module.exports = {
   Student: Student,
-  Ta: Ta
+  Ta: Ta,
+  Request: Request
 }
