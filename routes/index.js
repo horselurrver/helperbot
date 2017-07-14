@@ -33,6 +33,7 @@ router.get('/logout', function(req, res) {
 });
 
 router.post('/add', function(req, res) {
-
+  var currentId = req.user._id;
+  res.send(currentId);
 });
 module.exports = router;

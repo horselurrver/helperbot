@@ -79,7 +79,7 @@ function(accessToken, refreshToken, profile, done) {
         return done(err);
       } else if (!ta) {
         var newTA = new Ta ({
-          displayName: profile.displayName,
+          username: profile.displayName,
           available: true,
           isStudent: false
         });
@@ -100,7 +100,7 @@ function(accessToken, refreshToken, profile, done) {
         return done(err);
       } else if (! student) {
         var newStudent = new Student({
-          displayName: profile.displayName,
+          username: profile.displayName,
           priority: 3,
           isStudent: true
         });
