@@ -26,8 +26,6 @@ router.get('/index', function(req, res) {
   });
 });
 
-<<<<<<< HEAD
-=======
 router.get('/logout', function(req, res) {
   console.log('user: ' + req.user.displayName);
   req.logout();
@@ -37,6 +35,4 @@ router.get('/logout', function(req, res) {
 router.post('/add', function(req, res) {
 
 });
-
->>>>>>> ea72fa61e08e1ff54cdcc18a5b396b99f555262b
 module.exports = router;
