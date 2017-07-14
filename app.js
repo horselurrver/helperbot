@@ -111,11 +111,11 @@ mongoose.connection.on('error', function() {
           }
         });
       } else {
-        return done(null, studnet);
+        return done(null, student);
       }
     });
   }
-}));
+});
 
 passport.serializeUser(function(user, done) {
   done(null, user._id);
@@ -126,7 +126,7 @@ passport.deserializeUser(function(id, done) {
     if (ta) done(err, ta);
     else {
       Student.findById(id, function(err, student) {
-        done(err, studnet);
+        done(err, student);
       });
     }
   });
