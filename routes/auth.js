@@ -7,16 +7,9 @@ module.exports = function(passport) {
 
   router.get('/', function(req, res) {
     if (req.user) {
-<<<<<<< HEAD
       res.redirect('/index');
     } else {
       res.redirect('/login');
-=======
-      //res.render('/index');
-    } else {
-      //res.redirect('/login')
-      res.redirect('/index');
->>>>>>> 44601d0f569ce8e9b94a6bfffc48623514c558c2
     }
   });
 
