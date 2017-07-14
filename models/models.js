@@ -47,8 +47,10 @@ var requestSchema = new Schema({
 
 var Student = mongoose.model("Student", studentSchema);
 var Ta = mongoose.model("TA", taSchema);
+var Request = mongoose.model("Request", requestSchema);
 
 module.exports = {
   Student: Student,
-  Ta: Ta
+  Ta: Ta,
+  Request: Request
 }
