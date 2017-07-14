@@ -39,7 +39,7 @@ body
   background-color: #ff585b
 }
 
-.logout {
+.logout, .logout:hover {
   margin:16px;
   font-size:16px;
   float:right;
@@ -48,14 +48,19 @@ body
   background-color:#0d9ed3;
 }
 
+.taPic {
+  width: 100px;
+  border-radius:50%
+}
+
 .queueBody {
     margin-left:25%;
 }
 
 .btn-primary:hover {
-  background-color: #ff3336
+  background-color: #ff3336;
 }
 
 .panel-default {
-  margin:0
+  margin:0;
 }
