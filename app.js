@@ -34,7 +34,7 @@ app.set('view engine', '.hbs');
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -49,10 +49,10 @@ app.set('view engine', '.hbs');
 app.use(validator());
 
 // SESSION SETUP HERE
-// app.use(session({
-//   secret: 'to be or not to be that is the question',
-//   store: new MongoStore({mongooseConnection: mongoose.connection})
-// }));
+app.use(session({
+  secret: 'to be or not to be that is the question',
+  store: new MongoStore({mongooseConnection: mongoose.connection})
+}));
 
 // MONGODB SETUP HERE
 if (! process.env.MONGODB_URI) {
@@ -70,9 +70,8 @@ mongoose.connection.on('error', function() {
 passport.use(new SlackStrategy ({
   clientID: "137826509296.214032048054",
   clientSecret: "35d5d477a7a7f1d601182491a33ab744",
-  callbackURL: "http://localhost:3000/auth/slack/callback",
-  scope: ['identity.basic', 'identity.email', 'identity.avatar', 'identity.team']
 }, function(accessToken, refreshToken, profile, done) {
+  done(null, profile);
   if (taEmail.indexOf(profile.email)) {
     Ta.findOne({displayName: profile.first_name + " " + profile.last_name}, function(err, ta) {
       if (err) {
