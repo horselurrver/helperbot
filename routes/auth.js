@@ -13,9 +13,9 @@ module.exports = function(passport) {
     }
   })
 
-  router.get('/auth/slack', passport.authenticate('slack'));
+  router.get('/auth/slack', passport.authorize('slack'));
   router.get('/auth/slack/callback',
-    passport.authenticate('slack', {
+    passport.authorize('slack', {
     failureRedirect: '/login' }),
     function(req, res) {
       // Successful authentication, redirect home.
