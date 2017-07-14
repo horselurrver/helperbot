@@ -6,9 +6,13 @@ mongoose.Promise = global.Promise;
 
 var queue = [];
 
+router.use(function(req, res, next) {
+  if (req.user) next();
+  else res.redirect('/login');
+})
+
 /* GET home page. */
 router.get('/', function(req, res) {
-  console.log("this is req.user index", req.user);
   if (req.user) {
     res.redirect('/index');
   } else {
@@ -27,7 +31,6 @@ router.get('/index', function(req, res) {
 });
 
 router.get('/logout', function(req, res) {
-  console.log('user: ' + req.user.displayName);
   req.logout();
   res.redirect('/login');
 });

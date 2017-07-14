@@ -2,7 +2,7 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var studentSchema = new Schema({
-  displayName: String,
+  username: String,
   assignedTA: {
     type: Schema.Types.ObjectId,
     ref: 'TA'
@@ -19,7 +19,7 @@ var studentSchema = new Schema({
 });
 
 var taSchema = new Schema({
-  displayName: String,
+  username: String,
   available: {
     type: Boolean,
     default: false
