@@ -5,15 +5,16 @@ var models = require('../models/models.js');
 
 module.exports = function(passport) {
 
-  router.get('/', function(req, res) {
-    if (req.user) {
-      res.render('index', {
-        user: req.user.username
-      });
-    } else {
-      res.redirect('/login');
-    }
-  });
+  // router.get('/', function(req, res) {
+  //   console.log("this is req.user index", req.user);
+  //   if (req.user) {
+  //     res.redirect('/index', {
+  //       user: req.user.username
+  //     });
+  //   } else {
+  //     res.redirect('/login');
+  //   }
+  // });
 
   // path to start the OAuth flow
   router.get('/auth/slack', passport.authenticate('slack'));
