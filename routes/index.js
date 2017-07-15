@@ -11,7 +11,7 @@ router.use(function(req, res, next) {
   else res.redirect('/login');
 })
 
-/* GET home page. */
+// this render the login form if the user has not logged in yet
 router.get('/', function(req, res) {
   if (req.user) {
     res.redirect('/index');
@@ -20,19 +20,25 @@ router.get('/', function(req, res) {
   }
 });
 
+// this render the main page
 router.get('/index', function(req, res) {
-  console.log('the user: ' + req.user);
   res.render('index', {
     user: req.user.username
   });
 });
 
-
-router.post('/add', function(req, res) {
-  var currentId = req.user._id;
-  res.send(currentId);
-  // add current user to the queue and send back updated queue
-  // check if current user is first, if so, show the priority button
+// this adds the current user to the queue and send back the updated queue
+// check if the current user is first, if so, show the priority button
+router.get('/add', function(req, res) {
+  queue.push(req.user); // add to the queue
+  var isFirst = false;
+  if (queue.indexOf(req.user) === 0)
+    isFirst = true;
+  var returnObj = {
+    queue: queue,
+    isFirst: isFirst
+  }
+  res.json(returnObj);
 });
 
 router.post('/cancel', function(req, res) {
