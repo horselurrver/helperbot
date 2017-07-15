@@ -139,7 +139,17 @@
 
     $('#toggle').on('click', function(evt) {
       console.log('toggle button clicked!');
-      alert('hi');
+      $.ajax({
+        url: 'https://ronchon-maison-19725.herokuapp.com/changeStatus',
+        method: 'post',
+        success: function(resp) {
+          if (err) {
+            console.log(err);
+          } else {
+            alert('success!');
+          }
+        }
+      });
     });
 
     setInterval(function() {
