@@ -33,9 +33,12 @@
 <br/>
 <br/>
 
-<center><div class="alert alert-success" style="width:50%">
-  <strong>Heads up!</strong> You've been assigned to TA.
-</div></center>
+<div id="assignedAlert">
+  <!--<center><div class="alert alert-success" style="width:50%">
+    <strong>Heads up!</strong> You've been assigned to TA.
+  </div></center>-->
+</div>
+
 <div id="queue" class="queueBody" style="height:300px;width:50%;max-height:96%;overflow:auto">
 </div>
 <br/>
@@ -70,6 +73,17 @@
         $('#queue').empty();
         tas.forEach(function(ta) {
           //render each ta
+          if (ta.assignedTo.equals(req.user._id)) {
+            Ta.findOne({assignedTo:req.user._id}, function(err, ta) {
+              if (err) {
+                console.log(err);
+              } else {
+                $('#assignedAlert').append(`<center><div class="alert alert-success" style="width:50%">
+                  <strong>Heads up!</strong> You've been assigned to ${ta.username}.
+                </div></center>`);
+              }
+            });
+          }
           $('.tas').append(`<div style="display:inline-block;margin-right:5%">
             <img class="taPic" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTZdaIj40vlNy5-KRzeRtBc4nQO3qohNEQdfJydorNEXmUVwVyn"></img>
             <p class="text-with-img">${ta.username} {{#if ta.available}}<i style="color:green" class="fa fa-circle" aria-hidden="true"></i>{{else}}<i style="color:red" class="fa fa-circle" aria-hidden="true"></i>{{/if}}</p>
