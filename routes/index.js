@@ -33,40 +33,33 @@ router.get('/index', function(req, res) {
 // check if the current user is first, if so, show the priority button
 router.post('/add', function(req, res) {
   if (req.body.category === '') {
-    console.log('error');
+    res.json("Category has to be filled");
   } else {
-    console.log('no errors');
     Student.findByIdAndUpdate(req.user._id, {description: req.body.description, category: req.body.category}, function(error, student) {
+      if (error) {
+        res.json("Can't find student");
+      } else {
         queue.push(student);
-        queue.sort(function(a, b) {
-          return a.priority - b.priority;
-        });
+
         var isFirst = false;
-        if (queue[0].username === req.user.username) isFirst = true;
+        if (queue[0].username === student.username) isFirst = true;
         var returnObj = {
           queue: queue,
           isFirst: isFirst
         }
         res.json(returnObj);
-      });
-    }
-  });
-
+      }
+    });
+  }
+});
 
 // remove current user from the queue and send back update queue
-router.get('/cancel', function(req, res) {
-  console.log('got the cancel request!');
-  console.log('current queue: ' + queue);
-  for (var i = 0; i < queue.length; i++) {
-    if (queue[i].username === req.user.username) {
-      console.log('splicing');
-      queue.splice(i, 1);
-      console.log('after splicing');
-    }
-  }
- res.json({queue: queue});
-}
+// check if current user is first, if so, show the priority button
+router.post('/cancel', function(req, res) {
+  // if (queue[0])
+});
 
+//
 router.post('/priority', function(req, res) {
 
 });
