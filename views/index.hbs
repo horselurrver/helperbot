@@ -179,7 +179,7 @@
         success: function(resp) {
           var tas = resp.tas;
           var queue = resp.queue;
-          console.log('tas: ' + tas);
+          console.log('tas: ' + JSON.stringify(tas));
           $('.tas').empty();
           $('#queue').empty();
           tas.forEach(function(ta) {
