@@ -22,7 +22,7 @@ var models = require('./models/models');
 // require specific models
 var Student = models.Student;
 var Ta = models.Ta;
-var taDisplayName = ["Thanh Nguyen", "Lisa Hoong", "Moose Paksoy", "Kamran Kara-Pabani", "Syed Mohsin"]; // Lisa, Moose, kamran, Syed
+var taDisplayName = ["Amy Wang", "Lisa Hoong", "Moose Paksoy", "Kamran Kara-Pabani", "Syed Mohsin"]; // Lisa, Moose, kamran, Syed
 
 var app = express();
 
@@ -79,7 +79,7 @@ function(accessToken, refreshToken, profile, done) {
         return done(err);
       } else if (!ta) {
         var newTA = new Ta ({
-          username: profile.displayname,
+          username: profile.displayName,
           available: true,
           isStudent: false,
         });
@@ -87,6 +87,7 @@ function(accessToken, refreshToken, profile, done) {
           if (err) {
             return done(err);
           } else {
+            console.log('check out the new ta: ' + JSON.stringify(newTA));
             return done(null, newTA);
           }
         });

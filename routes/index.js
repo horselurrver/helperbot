@@ -82,13 +82,16 @@ router.get('getAssignments', function(req, res) {
     for (var i = 0; i < tas.length; i++) {
       if (tas[i].available) {
         // pop off
-
-        // set properties
-      }
+        var assignedStudent = queue.shift();
+        tas[i].assignedTo = assignedStudent._id;
+        tas[i].save();
+        assignedStudent.assignedTA = tas[i]._id;
+        assignedStudent.save();
+      }        // set properties
     }
+    res.json({queue: queue, tas: tas});
   });
 });
-
 
 router.post('/changeStatus', function(req, res) {
   Ta.findById(req.user._id, function(error, ta) {

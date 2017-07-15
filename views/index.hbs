@@ -57,6 +57,16 @@
 </form></center>
 
 <script>
+  //load ta and queue --> getAssignments
+  $.ajax({
+    url: 'http://localhost:3000/getAssignments',
+    method: 'get',
+    success: function(resp) {
+      console.log(resp.queue);
+      console.log(resp.tas);
+    }
+  });
+
   $('#addToQueue').on('click', function(evt) {
     evt.preventDefault();
     console.log('description: ' + $('#desc').val());
@@ -138,4 +148,8 @@
       })
     }
   }, 1000*60*60);
+
+  setInterval(function() {
+    //update with new tas and queue status
+  });
 </script>
