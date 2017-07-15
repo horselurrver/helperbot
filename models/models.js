@@ -24,7 +24,7 @@ var taSchema = new Schema({
   username: String,
   available: {
     type: Boolean,
-    default: true
+    default: false
   },
   isStudent: {
     type: Boolean,
