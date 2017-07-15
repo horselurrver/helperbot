@@ -7,15 +7,11 @@
 {{#if user.isStudent}}
 {{else}}
 <div style="margin-left:25%">
-  <div style="display:inline-block;margin-right:5%;color:white;font-size:20px;">
-    <img class="taPic" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTZdaIj40vlNy5-KRzeRtBc4nQO3qohNEQdfJydorNEXmUVwVyn"> &nbsp;&nbsp;&nbsp;&nbsp;No current jobs</img>
+  <div id="assignment" style="display:inline-block;margin-right:5%;color:white;font-size:20px;">
+    <img class="taPic" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTZdaIj40vlNy5-KRzeRtBc4nQO3qohNEQdfJydorNEXmUVwVyn"> &nbsp;&nbsp;&nbsp;&nbsp;</img>No current assignment
   </div>
   <br/>
   <br/>
-  <!-- <label class="switch" style="margin-left:2%">
-    <input id="toggle" type="checkbox">
-    <span class="slider round"></span>
-  </label> -->
   {{#if user.available}}
     <a id="availButton" title="button">Available</a>
   {{else}}
@@ -35,12 +31,12 @@
 <br/>
 <br/>
 
-<center><div class="alert alert-success" style="width:50%">
+<!-- <center><div class="alert alert-success" style="width:50%">
   <strong>Heads up!</strong> You've been assigned to TA.
 </div></center>
 <div id="queue" class="queueBody" style="height:300px;width:50%;max-height:96%;overflow:auto">
 </div>
-<br/>
+<br/> -->
 
 {{#if user.isStudent}}
 <center><form class="form-inline">
@@ -185,7 +181,7 @@
         success: function(resp) {
           var tas = resp.tas;
           var queue = resp.queue;
-          console.log('tas: ' + JSON.stringify(tas));
+          var currentUser = resp.user;
           $('.tas').empty();
           $('#queue').empty();
           tas.forEach(function(ta) {
@@ -200,6 +196,9 @@
                 <img class="taPic" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTZdaIj40vlNy5-KRzeRtBc4nQO3qohNEQdfJydorNEXmUVwVyn"></img>
                 <p class="text-with-img">${ta.username} <i style="color:red" class="fa fa-circle" aria-hidden="true"></i></p>
               </div>`);
+            }
+            if (ta.username === user.username) {
+              $('#assignment').text('Assigned to ' + ta.assignedTo);
             }
           });
           queue.forEach(function(student) {

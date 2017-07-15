@@ -94,7 +94,7 @@ router.get('/getAssignments', function(req, res) {
     });
   } else {
     Ta.find({}, function(err, tas) {
-      res.json({queue: queue, tas:tas});
+      res.json({queue: queue, tas:tas, user: req.user});
     })
   }
 });
