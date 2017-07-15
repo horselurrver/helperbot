@@ -31,12 +31,6 @@ module.exports = function(passport) {
     res.render('login');
   })
 
-  router.get('/index', function(req, res) {
-    res.render('index', {
-      user: req.user.username
-    });
-  });
-
   router.get('/logout', function(req, res) {
     req.logout();
     res.redirect('/login');

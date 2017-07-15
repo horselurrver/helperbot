@@ -73,13 +73,8 @@ passport.use(new SlackStrategy ({
   scope: "identity.basic"
 },
 function(accessToken, refreshToken, profile, done) {
-<<<<<<< HEAD
   if (taDisplayName.indexOf(profile.displayName) !== -1) {
     Ta.findOne({username: profile.displayName}, function(err, ta) {
-=======
-  if (taDisplayName.indexOf(profile.username) !== -1) {
-    Ta.findOne({username: profile.username}, function(err, ta) {
->>>>>>> 9598896f9c406ef8016156384d1ee8febac0a3b7
       if (err) {
         return done(err);
       } else if (!ta) {
@@ -100,11 +95,7 @@ function(accessToken, refreshToken, profile, done) {
       }
     });
   } else {
-<<<<<<< HEAD
     Student.findOne({username: profile.displayName}, function(err, student) {
-=======
-    Student.findOne({username: profile.username}, function(err, student) {
->>>>>>> 9598896f9c406ef8016156384d1ee8febac0a3b7
       if (err) {
         return done(err);
       } else if (! student) {

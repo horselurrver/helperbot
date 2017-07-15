@@ -20,20 +20,12 @@ router.get('/', function(req, res) {
   }
 });
 
-router.get('/login', function(req, res) {
-  res.render('login');
-});
-
 router.get('/index', function(req, res) {
   res.render('index', {
     user: req.user.username
   });
 });
 
-router.get('/logout', function(req, res) {
-  req.logout();
-  res.redirect('/login');
-});
 
 router.post('/add', function(req, res) {
   var currentId = req.user._id;
