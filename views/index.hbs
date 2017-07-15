@@ -59,7 +59,14 @@
 <script>
   //load ta and queue --> getAssignments
   $(document).ready(function() {
-
+    $.ajax({
+      url: 'http://localhost:3000/getAssignments',
+      method:'get',
+      success: function(resp) {
+        console.log(resp);
+      }
+    });
+    
     $('#addToQueue').on('click', function(evt) {
       evt.preventDefault();
       console.log('description: ' + $('#desc').val());
