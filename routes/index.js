@@ -104,11 +104,16 @@ router.post('/changeStatus', function(req, res) {
   Ta.findById(req.user._id, function(error, ta) {
     if (error) res.json("Can't find TA in /changeStatus post route");
     else {
+<<<<<<< HEAD
+      var status = ta["available"];
+      ta["available"] = ! status;
+=======
       console.log('Before setting: ' + ta['available']);
       ta['available'] = ! ta['available'];
       console.log('After setting: ' + ta['available']);
+>>>>>>> f43dd25438e6a06364bc62d2f8666f682447e97c
       ta.save(function(error) {
-        res.json("error saving", error);
+        res.json(error);
       });
     }
   });
@@ -117,8 +122,8 @@ router.post('/changeStatus', function(req, res) {
 router.get('/reset', function(req, res) {
   queue = [];
   Ta.find(function(err, ta) {
-    if(error) {
-      res.json(error);
+    if(err) {
+      res.json(err);
     } else {
       ta.forEach(function(ta) {
         ta.available = true;
