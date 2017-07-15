@@ -77,8 +77,8 @@
         $('#queue').empty();
         tas.forEach(function(ta) {
           //render each ta
-          if (ta.assignedTo.equals(theUser._id)) {
-            Ta.findOne({assignedTo:theUser._id}, function(err, ta) {
+          if (ta.assignedTo.equals(user._id)) {
+            Ta.findOne({assignedTo:user._id}, function(err, ta) {
               if (err) {
                 console.log(err);
               } else {
