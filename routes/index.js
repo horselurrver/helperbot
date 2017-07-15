@@ -25,7 +25,7 @@ router.get('/', function(req, res) {
 // this render the main page
 router.get('/index', function(req, res) {
   res.render('index', {
-    user: req.user.username
+    user: req.user
   });
 });
 
