@@ -38,8 +38,7 @@
 <center><div class="alert alert-success" style="width:50%">
   <strong>Heads up!</strong> You've been assigned to TA.
 </div></center>
-<div class="queueBody" style="height:300px;width:50%;overflow-y:scroll">
-
+<div id="queue" class="queueBody" style="height:300px;width:50%;max-height:96%;overflow:auto">
 </div>
 <br/>
 
@@ -47,17 +46,8 @@
   <div class="input-group" style="width:20%">
     <input id="desc" type="text" class="form-control" placeholder="(Optional) Brief description">
   </div>
-  <div class="btn-group">
-    <i class="dropdown-arrow dropdown-arrow-inverse"></i>
-    <button class="btn btn-primary">Category</button>
-    <button class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
-      <span class="caret"></span>
-    </button>
-    <ul class="dropdown-menu dropdown-inverse">
-      <li><a href="#fakelink">Debugging</a></li>
-      <li><a href="#fakelink">Concept</a></li>
-      <li><a href="#fakelink">Clarification</a></li>
-    </ul>
+  <div class="input-group" style="width:20%">
+    <input id="category" type="text" class="form-control" placeholder="(Optional) Category">
   </div>
   <button id="addToQueue" class="btn btn-primary">Add to Queue</button>
   <div class="checkbox">
@@ -67,14 +57,24 @@
 
 <script>
   $('#addToQueue').on('click', function(evt) {
+    evt.preventDefault();
     $.ajax({
       url: 'http://localhost:3000/add',
-      method:'get',
+      method:'post',
+      data: {
+        description: $('#desc').val(),
+        category: $('#category').val()
+      },
       success: function(resp) {
-        var queue = resp.queue;
-        var isFirst = resp.isFirst;
-        console.log('Description: ' );
-        console.log('Category: ' + )''
+        var queue = resp['queue'];
+        $('#queue').empty();
+        for (var i = 0; i < queue.length; i++) {
+          $('#queue').append(`<div class="panel panel-default">
+          <div class="panel-heading">${queue[i].username}</div>
+          <div class="panel-body"><strong>${queue[i].category}</strong>: ${queue[i].description}</div>
+          </div>`);
+        }
+        console.log('response from request: ' + JSON.stringify(resp));
       }
     });
   });
