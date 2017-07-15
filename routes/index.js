@@ -31,6 +31,17 @@ router.get('/index', function(req, res) {
 router.post('/add', function(req, res) {
   var currentId = req.user._id;
   res.send(currentId);
+  // add current user to the queue and send back updated queue
+  // check if current user is first, if so, show the priority button
+});
+
+router.post('/cancel', function(req, res) {
+  // remove current user from the queue and send back update queue
+  // check if current user is first, if so, show the priority button
+});
+
+router.post('/priority', function(req, res) {
+
 });
 
 module.exports = router;
