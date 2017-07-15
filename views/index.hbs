@@ -186,7 +186,7 @@
             //render each ta
             $('.tas').append(`<div style="display:inline-block;margin-right:5%">
               <img class="taPic" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTZdaIj40vlNy5-KRzeRtBc4nQO3qohNEQdfJydorNEXmUVwVyn"></img>
-              <p class="text-with-img">${ta.username} {{#if ta["available"]}}<i style="color:green" class="fa fa-circle" aria-hidden="true"></i>{{else}}<i style="color:red" class="fa fa-circle" aria-hidden="true"></i>{{/if}}</p>
+              <p class="text-with-img">${ta.username} - ${ta.available} {{#if ta.available}}<i style="color:green" class="fa fa-circle" aria-hidden="true"></i>{{else}}<i style="color:red" class="fa fa-circle" aria-hidden="true"></i>{{/if}}</p>
             </div>`);
           });
           queue.forEach(function(student) {
