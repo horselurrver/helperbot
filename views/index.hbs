@@ -54,7 +54,7 @@
   $(document).ready(function() {
     var user = null;
     $.ajax({
-      url: 'https://ronchon-maison-19725.herokuapp.com/getUser',
+      url: 'http://localhost:3000/getUser',
       method: 'get',
       success: function(theUser) {
         user = theUser;
@@ -67,7 +67,7 @@
     });
 
     $.ajax({
-      url: 'https://ronchon-maison-19725.herokuapp.com/getAssignments',
+      url: 'http://localhost:3000/getAssignments',
       method:'get',
       success: function(resp) {
         var tas = resp.tas;
@@ -77,12 +77,6 @@
         $('#queue').empty();
         tas.forEach(function(ta) {
           //render each ta
-<<<<<<< HEAD
-          if (ta.assignedTo.equals(user._id)) {
-            $('#assignedAlert').append(`<center><div class="alert alert-success" style="width:50%">
-              <strong>Heads up!</strong> You've been assigned to ${ta.username}.
-              </div></center>`);
-=======
           if (JSON.stringify(ta.assignedTo) === JSON.stringify(user._id)) {
             Ta.findOne({assignedTo:user._id}, function(err, ta) {
               if (err) {
@@ -93,7 +87,6 @@
                 </div></center>`);
               }
             });
->>>>>>> 5cae0d9e397562194395b86ed21e7237a78f6856
           }
           $('.tas').append(`<div style="display:inline-block;margin-right:5%">
             <img class="taPic" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTZdaIj40vlNy5-KRzeRtBc4nQO3qohNEQdfJydorNEXmUVwVyn"></img>
@@ -114,7 +107,7 @@
       console.log('description: ' + $('#desc').val());
       console.log('category: ' + $('#category').val());
       $.ajax({
-        url: 'https://ronchon-maison-19725.herokuapp.com/add',
+        url: 'http://localhost:3000/add',
         method:'post',
         data: {
           description: $('#desc').val(),
@@ -148,7 +141,7 @@
     $('#queue').on('click', '#cancel', function () {
       console.log('Cancel!');
       $.ajax({
-        url: 'https://ronchon-maison-19725.herokuapp.com/cancel',
+        url: 'http://localhost:3000/cancel',
         method: 'get',
         success: function(resp) {
           $('#queue').empty();
@@ -185,7 +178,7 @@
         $('#toggle').attr('class', 'btn btn-warning')
       }
       $.ajax({
-        url: 'https://ronchon-maison-19725.herokuapp.com/changeStatus',
+        url: 'http://localhost:3000/changeStatus',
         method: 'post',
         success: function(resp) {
         }
@@ -197,7 +190,7 @@
       if (currentHour === 0) {
         // make post request to reset
         $.ajax({
-          url:"https://ronchon-maison-19725.herokuapp.com/reset",
+          url:"http://localhost:3000/reset",
           method:'get',
           success: function(resp) {
             //change the queue and the TAs
@@ -209,7 +202,7 @@
     setInterval(function() {
       //update with new tas and queue status
       $.ajax({
-        url: 'https://ronchon-maison-19725.herokuapp.com/getAssignments',
+        url: 'http://localhost:3000/getAssignments',
         method:'get',
         success: function(resp) {
           var tas = resp.tas;
