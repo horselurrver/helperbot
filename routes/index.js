@@ -82,7 +82,6 @@ router.get('/getAssignments', function(req, res) {
         if (tas[i].available) {
           // pop off
           var assignedStudent = queue.shift();
-          console.log("this is assignedStudent", assignedStudent);
           tas[i]["assignedTo"] = assignedStudent._id;
           tas[i]["available"] = !tas[i]["available"];
           tas[i].save();
@@ -127,5 +126,9 @@ router.get('/reset', function(req, res) {
     }
   });
 });
+
+router.get('/getUser', function(req, res) {
+  res.json(req.user);
+})
 
 module.exports = router;

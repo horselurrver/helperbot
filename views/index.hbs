@@ -1,17 +1,33 @@
-<a href="/logout" class="logout" role="button">Logout</a>
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset="utf-8">
+    <title>HelperBot</title>
+
+    <!-- Might want to get bootstrap and jquery in js and css file in public to keep it local -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="/stylesheets/style.css"></link>
+    <!-- Might not need the stylesheet if not working -->
+    <script type="text/javascript" src="/js/script.js"></script>
+  </head>
+  <body>
+    <a href="/logout" class="logout" role="button">Logout</a>
 <br/>
 
-  <center><h1 style="color:white">Welcome, {{user.username}}!</h1></center>
-  <p id='userName' hidden>{{user.username}}</p>
+  <center><h1 style="color:white">Welcome, Thanh Nguyen!</h1></center>
+  <p id='userName' hidden>Thanh Nguyen</p>
   <br/>
-{{#if user.isStudent}}
-{{else}}
 <div style="margin-left:25%">
   <div id="assignment" style="display:inline-block;margin-right:5%;color:white;font-size:20px;">
     <img class="taPic" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTZdaIj40vlNy5-KRzeRtBc4nQO3qohNEQdfJydorNEXmUVwVyn"> &nbsp;&nbsp;&nbsp;&nbsp;</img>No current assignment
   </div>
   <br/>
   <br/>
+
   {{#if user.available}}
     <a id="availButton" title="button">Available</a>
   {{else}}
@@ -19,39 +35,45 @@
   {{/if}}
 
 </div>
-{{/if}}
+
 
 {{#if user.isStudent}}
 <div class="tas" style="margin-left:45%;">
   <center>
     <!-- This is where the Ta profiles will be -->
   </center>
+
 </div>
 {{/if}}
 <br/>
 <br/>
+
 
 <!-- <center><div class="alert alert-success" style="width:50%">
   <strong>Heads up!</strong> You've been assigned to TA.
 </div></center>
+
 <div id="queue" class="queueBody" style="height:300px;width:50%;max-height:96%;overflow:auto">
 </div>
 <br/> -->
 
-{{#if user.isStudent}}
-<center><form class="form-inline">
-  <div class="input-group" style="width:20%">
-    <input id="desc" type="text" class="form-control" placeholder="(Optional) Brief description">
-  </div>
-  <div class="input-group" style="width:20%">
-    <input id="category" type="text" class="form-control" placeholder="(Optional) Category">
-  </div>
-  <button id="addToQueue" class="btn btn-primary">Add to Queue</button>
-</form></center>
-{{/if}}
 <script>
   //load ta and queue --> getAssignments
   $(document).ready(function() {
+    var user = null;
+    $.ajax({
+      url: 'http://localhost:3000/getUser',
+      method: 'get',
+      success: function(theUser) {
+        user = theUser;
+        if (!theUser.isStudent && theUser.available) {
+          $('#toggle').attr('class', 'btn btn-success');
+        } else {
+          $('#toggle').attr('class', 'btn btn-warning');
+        }
+      }
+    });
+
     $.ajax({
       url: 'http://localhost:3000/getAssignments',
       method:'get',
@@ -63,9 +85,20 @@
         $('#queue').empty();
         tas.forEach(function(ta) {
           //render each ta
+          if (JSON.stringify(ta.assignedTo) === JSON.stringify(user._id)) {
+            Ta.findOne({assignedTo:user._id}, function(err, ta) {
+              if (err) {
+                console.log(err);
+              } else {
+                $('#assignedAlert').append(`<center><div class="alert alert-success" style="width:50%">
+                  <strong>Heads up!</strong> You've been assigned to ${ta.username}.
+                </div></center>`);
+              }
+            });
+          }
           $('.tas').append(`<div style="display:inline-block;margin-right:5%">
             <img class="taPic" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTZdaIj40vlNy5-KRzeRtBc4nQO3qohNEQdfJydorNEXmUVwVyn"></img>
-            <p class="text-with-img">${ta.username} {{#if ta.available}}<i style="color:green" class="fa fa-circle" aria-hidden="true"></i>{{else}}<i style="color:red" class="fa fa-circle" aria-hidden="true"></i>{{/if}}</p>
+            <p class="text-with-img">${ta.username} <i style="color:red" class="fa fa-circle" aria-hidden="true"></i></p>
           </div>`);
         });
         queue.forEach(function(student) {
@@ -212,3 +245,6 @@
     }, 5000);
   });
 </script>
+
+  </body>
+</html>
