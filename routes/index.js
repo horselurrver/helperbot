@@ -45,23 +45,21 @@ router.get('/add', function(req, res) {
           queue.push(req.user);
         } else if (student.priority === 2) { // if student is priority 2, find the first person with priority 3 and add them in before this person
           var index;
-          for (var i = queue.length - 1; i > 0; i--) {
+          for (var i = queue.length - 1; i > 1; i--) {
             if (queue[i].priority === 3) index = i;
           }
           queue.splice(index - 1, 0, student);
         }
       }
-    })
+    });
+    var isFirst = false;
+    if (queue[0].username === req.body.username) isFirst = true;
+    var returnObj = {
+      queue: queue,
+      isFirst: isFirst
+    }
+    res.json(returnObj);
   }
-  // queue.push(req.user); // add to the queue
-  // var isFirst = false;
-  // if (queue.indexOf(req.user) === 0)
-  //   isFirst = true;
-  // var returnObj = {
-  //   queue: queue,
-  //   isFirst: isFirst
-  // }
-  // res.json(returnObj);
 });
 
 // remove current user from the queue and send back update queue
