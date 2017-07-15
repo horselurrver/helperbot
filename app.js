@@ -77,20 +77,22 @@ function(accessToken, refreshToken, profile, done) {
     Ta.findOne({username: profile.displayName}, function(err, ta) {
       if (err) {
         return done(err);
-      } else if (!ta) {
+      } else if (! ta) {
         var newTA = new Ta ({
-          username: profile.displayname,
+          username: profile.displayName,
           available: true,
           isStudent: false,
         });
-        newTA.save(function(err) {
+        newTA.save(function(err, ta2) {
           if (err) {
             return done(err);
           } else {
-            return done(null, newTA);
+            console.log("just created ta", ta2);
+            return done(null, ta2);
           }
         });
       } else {
+        console.log("found ta model", ta);
         return done(null, ta);
       }
     });

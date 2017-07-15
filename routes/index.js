@@ -77,7 +77,7 @@ router.get('/cancel', function(req, res) {
  res.json({queue: queue});
 });
 
-router.get('getAssignments', function(req, res) {
+router.get('/getAssignments', function(req, res) {
   Ta.find({}, function(err, tas) {
     for (var i = 0; i < tas.length; i++) {
       if (tas[i].available) {
@@ -97,6 +97,21 @@ router.post('/changeStatus', function(req, res) {
       ta.available = ! ta.available;
       ta.save(function(error) {
         res.json("error saving", error);
+      });
+    }
+  });
+});
+
+router.get('/reset', function(req, res) {
+  queue = [];
+  Ta.find(function(err, ta) {
+    if(error) {
+      res.json(error);
+    } else {
+      ta.forEach(function(ta) {
+        ta.available = true;
+        ta.assignedTo = {};
+        ta.save();
       });
     }
   });

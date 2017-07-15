@@ -24,7 +24,7 @@ var taSchema = new Schema({
   username: String,
   available: {
     type: Boolean,
-    default: false
+    default: true
   },
   isStudent: {
     type: Boolean,
@@ -37,7 +37,7 @@ var taSchema = new Schema({
 })
 
 var Student = mongoose.model("Student", studentSchema);
-var Ta = mongoose.model("TA", taSchema);
+var Ta = mongoose.model("Ta", taSchema);
 
 module.exports = {
   Student: Student,
