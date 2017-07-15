@@ -12,11 +12,11 @@
   </div>
   <br/>
   <br/>
-  <!-- <label class="switch" style="margin-left:2%">
+  <label class="switch" style="margin-left:2%">
     <input id="toggle" type="checkbox">
     <span class="slider round"></span>
-  </label> -->
-  <a id="button" title="button">Press Me</a>
+  </label>
+  <!-- <a id="button" title="button">Press Me</a> -->
 </div>
 {{/if}}
 
@@ -59,7 +59,7 @@
         $(this).toggleClass("down");
     });
 
-    
+
     $.ajax({
       url: 'https://ronchon-maison-19725.herokuapp.com/getAssignments',
       method:'get',
