@@ -29,15 +29,18 @@ router.get('/index', function(req, res) {
 
 // this adds the current user to the queue and send back the updated queue
 // check if the current user is first, if so, show the priority button
-router.get('/add', function(req, res) {
+router.post('/add', function(req, res) {
+  req.user.description = req.body.description;
+  req.user.category = req.body.category;
   queue.push(req.user); // add to the queue
   var isFirst = false;
-  if (queue.indexOf(req.user) === 0)
-    isFirst = true;
+/*  if (queue.indexOf(req.user) === 0)
+    isFirst = true;*/
   var returnObj = {
     queue: queue,
-    isFirst: isFirst
+    //isFirst: isFirst
   }
+  console.log('returnObj: ' + JSON.stringify(returnObj));
   res.json(returnObj);
 });
 
