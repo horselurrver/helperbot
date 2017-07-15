@@ -35,21 +35,23 @@ router.post('/add', function(req, res) {
   if (req.body.category === '') {
     console.log('error');
   } else {
-    Student.findByIdAndUpdate(req.user._id, {description: req.body.description, category: req.body.category}, function(error, student) {
-      if (error) {
-        res.json("Error in post request /add");
+    console.log(req.body);
+    Student.findById(req.user._id, function(err, student) {
+      if (err) {
+        res.json({'Error':err});
       } else {
-        queue.push(student);
-        queue.sort(function(a, b) {
-          return a.priority - b.priority;
+        student.description = req.body.description;
+        student.category = req.body.category;
+        student.save(function(err, student) {
+          queue.push(student);
+          queue.sort(function(a, b) {
+            return a.priority - b.priority;
+          });
+          var returnObj = {
+            queue: queue,
+          }
+          res.json(returnObj);
         });
-        var isFirst = false;
-        if (queue[0].username === req.user.username) isFirst = true;
-        var returnObj = {
-          queue: queue,
-          isFirst: isFirst
-        }
-        res.json(returnObj);
       }
     });
   }
@@ -72,7 +74,6 @@ router.get('/cancel', function(req, res) {
       console.log('after splicing');
     }
   }
-<<<<<<< HEAD
  res.json({queue: queue});
 });
 
@@ -81,17 +82,13 @@ router.get('getAssignments', function(req, res) {
     for (var i = 0; i < tas.length; i++) {
       if (tas[i].available) {
         // pop off
+
         // set properties
       }
     }
   });
 });
 
-router.post('/priority', function(req, res) {
-=======
-  res.json({queue: queue});
-});
->>>>>>> 93175253d261ee7312f4bae24070b9d0ca6c05db
 
 router.post('/changeStatus', function(req, res) {
   Ta.findById(req.user._id, function(error, ta) {

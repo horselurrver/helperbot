@@ -74,16 +74,11 @@
         $('#desc').val('');
         $('#category').val('');
         for (var i = 0; i < queue.length; i++) {
-          if (i === 0 && resp.isFirst) {
-            $('#queue').append(`<div class="panel panel-default">
-            <div class="panel-heading">${queue[i].username} <i id='cancel' style="float:right;color:red" class="fa fa-times-circle" aria-hidden="true"></i></div>
-            <div class="panel-body"><strong>${queue[i].category}</strong>: ${queue[i].description}<button style="float:right" class="btn btn-default">Get Pass</button></div>
-            </div>`);
-          } else if ($('#userName').text() === queue[i].username) {
+          if ($('#userName').text() === queue[i].username) {
             console.log('username text: ' + $('#userName').text());
             $('#queue').append(`<div class="panel panel-default">
             <div class="panel-heading">${queue[i].username} <i id='cancel' style="float:right;color:red" class="fa fa-times-circle" aria-hidden="true"></i></div>
-            <div class="panel-body"><strong>${queue[i].category}</strong>: ${queue[i].description}akajsdfs</div>
+            <div class="panel-body"><strong>${queue[i].category}</strong>: ${queue[i].description}</div>
             </div>`);
           } else {
             $('#queue').append(`<div class="panel panel-default">
@@ -108,10 +103,18 @@
         var queue = resp['queue'];
         console.log('response queue: ' + queue);
         for (var i = 0; i < queue.length; i++) {
-          $('#queue').append(`<div class="panel panel-default">
-          <div class="panel-heading">${queue[i].username}</div>
-          <div class="panel-body"><strong>${queue[i].category}</strong>: ${queue[i].description}</div>
-          </div>`);
+          if ($('#userName').text() === queue[i].username) {
+            console.log('username text: ' + $('#userName').text());
+            $('#queue').append(`<div class="panel panel-default">
+            <div class="panel-heading">${queue[i].username} <i id='cancel' style="float:right;color:red" class="fa fa-times-circle" aria-hidden="true"></i></div>
+            <div class="panel-body"><strong>${queue[i].category}</strong>: ${queue[i].description}</div>
+            </div>`);
+          } else {
+            $('#queue').append(`<div class="panel panel-default">
+            <div class="panel-heading">${queue[i].username}</div>
+            <div class="panel-body"><strong>${queue[i].category}</strong>: ${queue[i].description}</div>
+            </div>`);
+          }
         }
         $("#addToQueue").prop("disabled",false);
       }
