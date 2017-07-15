@@ -57,11 +57,18 @@
 <script>
   //load ta and queue --> getAssignments
   $(document).ready(function() {
-    if (!req.user.isStudent && req.user.available) {
-      $('#toggle').attr('class', 'btn btn-success');
-    } else {
-      $('#toggle').attr('class', 'btn btn-warning');
-    }
+    $.ajax({
+      url: 'https://ronchon-maison-19725.herokuapp.com/getUser',
+      method: 'get',
+      success: function(user) {
+        if (!user.isStudent && user.available) {
+          $('#toggle').attr('class', 'btn btn-success');
+        } else {
+          $('#toggle').attr('class', 'btn btn-warning');
+        }
+      }
+    });
+    
     $.ajax({
       url: 'https://ronchon-maison-19725.herokuapp.com/getAssignments',
       method:'get',
