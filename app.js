@@ -77,17 +77,16 @@ function(accessToken, refreshToken, profile, done) {
     Ta.findOne({username: profile.displayName}, function(err, ta) {
       if (err) {
         return done(err);
-      } else if (!ta) {
+      } else if (! ta) {
         var newTA = new Ta ({
           username: profile.displayName,
           available: true,
           isStudent: false,
         });
-        newTA.save(function(err) {
+        newTA.save(function(err, ta2) {
           if (err) {
             return done(err);
           } else {
-            console.log('check out the new ta: ' + JSON.stringify(newTA));
             return done(null, newTA);
           }
         });

@@ -37,7 +37,7 @@ var taSchema = new Schema({
 })
 
 var Student = mongoose.model("Student", studentSchema);
-var Ta = mongoose.model("TA", taSchema);
+var Ta = mongoose.model("Ta", taSchema);
 
 module.exports = {
   Student: Student,

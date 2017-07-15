@@ -77,21 +77,27 @@ router.get('/cancel', function(req, res) {
  res.json({queue: queue});
 });
 
-router.get('getAssignments', function(req, res) {
-  Ta.find({}, function(err, tas) {
-    console.log('inside find function');
-    for (var i = 0; i < tas.length; i++) {
-      if (tas[i].available) {
-        // pop off
-        var assignedStudent = queue.shift();
-        tas[i]['assignedTo'] = assignedStudent._id;
-        tas[i].save();
-        assignedStudent['assignedTA'] = tas[i]._id;
-        assignedStudent.save();
-      }        // set properties
-    }
-    res.json({queue: queue, tas: tas});
-  });
+router.get('/getAssignments', function(req, res) {
+  if (queue.length >= 1) {
+    Ta.find({}, function(err, tas) {
+      for (var i = 0; i < tas.length; i++) {
+        if (tas[i].available) {
+          // pop off
+          var assignedStudent = queue.shift();
+          console.log("this is assignedStudent", assignedStudent);
+          tas[i]["assignedTo"] = assignedStudent._id;
+          tas[i].save();
+          assignedStudent["assignedTA"] = tas[i]._id;
+          assignedStudent.save();
+        }        // set properties
+      }
+      res.json({queue: queue, tas: tas});
+    });
+  } else {
+    Ta.find({}, function(err, tas) {
+      res.json({queue: queue, tas:tas});
+    })
+  }
 });
 
 router.post('/changeStatus', function(req, res) {
@@ -101,6 +107,21 @@ router.post('/changeStatus', function(req, res) {
       ta.available = ! ta.available;
       ta.save(function(error) {
         res.json("error saving", error);
+      });
+    }
+  });
+});
+
+router.get('/reset', function(req, res) {
+  queue = [];
+  Ta.find(function(err, ta) {
+    if(error) {
+      res.json(error);
+    } else {
+      ta.forEach(function(ta) {
+        ta.available = true;
+        ta.assignedTo = {};
+        ta.save();
       });
     }
   });
