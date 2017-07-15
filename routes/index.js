@@ -41,19 +41,25 @@ router.get('/add', function(req, res) {
       if (queue.length === 0 || queue.length === 1) {
         queue.push(req.user);
       } else {
-        if (student.priority === 3) { // if student has no priority just add to end of queue
+        // if (student.priority === 3) { // if student has no priority just add to end of queue
+        //   queue.push(req.user);
+        // } else if (student.priority === 2) { // if student is priority 2, find the first person with priority 3 and add them in before this person
           queue.push(req.user);
-        } else if (student.priority === 2) { // if student is priority 2, find the first person with priority 3 and add them in before this person
-          var index;
-          for (var i = queue.length - 1; i > 1; i--) {
-            if (queue[i].priority === 3) index = i;
+          var key;
+          for (var j = 1; j < queue.length; j++) {
+            key = queue[j].priority;
+            var i = j - 1;
+            while (i >= 1 && queue[i].priority > key) {
+              queue[i + 1] = queue[i];
+              i = i - 1;
+            }
+            queue[i + 1] = key;
           }
-          queue.splice(index - 1, 0, student);
         }
       }
     });
     var isFirst = false;
-    if (queue[0].username === req.body.username) isFirst = true;
+    if (queue[0].username === req.user.username) isFirst = true;
     var returnObj = {
       queue: queue,
       isFirst: isFirst
