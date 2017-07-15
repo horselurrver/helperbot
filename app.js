@@ -22,7 +22,7 @@ var models = require('./models/models');
 // require specific models
 var Student = models.Student;
 var Ta = models.Ta;
-var taDisplayName = ["Amy Wang", "Lisa Hoong", "Moose Paksoy", "Kamran Kara-Pabani", "Syed Mohsin"]; // Lisa, Moose, kamran, Syed
+var taDisplayName = ["Lisa Hoong", "Moose Paksoy", "Kamran Kara-Pabani", "Syed Mohsin"]; // Lisa, Moose, kamran, Syed
 
 var app = express();
 

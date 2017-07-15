@@ -58,98 +58,92 @@
 
 <script>
   //load ta and queue --> getAssignments
-  $.ajax({
-    url: 'http://localhost:3000/getAssignments',
-    method: 'get',
-    success: function(resp) {
-      console.log(resp.queue);
-      console.log(resp.tas);
-    }
-  });
+  $(document).ready(function() {
 
-  $('#addToQueue').on('click', function(evt) {
-    evt.preventDefault();
-    console.log('description: ' + $('#desc').val());
-    console.log('category: ' + $('#category').val());
-    $.ajax({
-      url: 'http://localhost:3000/add',
-      method:'post',
-      data: {
-        description: $('#desc').val(),
-        category: $('#category').val()
-      },
-      success: function(resp) {
-        var queue = resp['queue'];
-        $('#queue').empty();
-        $('#desc').val('');
-        $('#category').val('');
-        for (var i = 0; i < queue.length; i++) {
-          if ($('#userName').text() === queue[i].username) {
-            console.log('username text: ' + $('#userName').text());
-            $('#queue').append(`<div class="panel panel-default">
-            <div class="panel-heading">${queue[i].username} <i id='cancel' style="float:right;color:red" class="fa fa-times-circle" aria-hidden="true"></i></div>
-            <div class="panel-body"><strong>${queue[i].category}</strong>: ${queue[i].description}</div>
-            </div>`);
-          } else {
-            $('#queue').append(`<div class="panel panel-default">
-            <div class="panel-heading">${queue[i].username}</div>
-            <div class="panel-body"><strong>${queue[i].category}</strong>: ${queue[i].description}</div>
-            </div>`);
-          }
-        }
-        console.log('response from request: ' + JSON.stringify(resp));
-        $("#addToQueue").prop("disabled",true);
-      }
-    });
-  });
-
-  $('#queue').on('click', '#cancel', function () {
-    console.log('Cancel!');
-    $.ajax({
-      url: 'http://localhost:3000/cancel',
-      method: 'get',
-      success: function(resp) {
-        $('#queue').empty();
-        var queue = resp['queue'];
-        console.log('response queue: ' + queue);
-        for (var i = 0; i < queue.length; i++) {
-          if ($('#userName').text() === queue[i].username) {
-            console.log('username text: ' + $('#userName').text());
-            $('#queue').append(`<div class="panel panel-default">
-            <div class="panel-heading">${queue[i].username} <i id='cancel' style="float:right;color:red" class="fa fa-times-circle" aria-hidden="true"></i></div>
-            <div class="panel-body"><strong>${queue[i].category}</strong>: ${queue[i].description}</div>
-            </div>`);
-          } else {
-            $('#queue').append(`<div class="panel panel-default">
-            <div class="panel-heading">${queue[i].username}</div>
-            <div class="panel-body"><strong>${queue[i].category}</strong>: ${queue[i].description}</div>
-            </div>`);
-          }
-        }
-        $("#addToQueue").prop("disabled",false);
-      }
-    })
-   });
-
-  $('#getPass').on('click', function(evt) {
-    console.log('Get pass!');
-  });
-
-  setInterval(function() {
-    var currentHour = (new Date()).getHours();
-    if (currentHour === 0) {
-      // make post request to reset
+    $('#addToQueue').on('click', function(evt) {
+      evt.preventDefault();
+      console.log('description: ' + $('#desc').val());
+      console.log('category: ' + $('#category').val());
       $.ajax({
-        url:"http://localhost:3000/reset",
-        method:'get',
+        url: 'http://localhost:3000/add',
+        method:'post',
+        data: {
+          description: $('#desc').val(),
+          category: $('#category').val()
+        },
         success: function(resp) {
-          //change the queue and the TAs
+          var queue = resp['queue'];
+          $('#queue').empty();
+          $('#desc').val('');
+          $('#category').val('');
+          for (var i = 0; i < queue.length; i++) {
+            if ($('#userName').text() === queue[i].username) {
+              console.log('username text: ' + $('#userName').text());
+              $('#queue').append(`<div class="panel panel-default">
+              <div class="panel-heading">${queue[i].username} <i id='cancel' style="float:right;color:red" class="fa fa-times-circle" aria-hidden="true"></i></div>
+              <div class="panel-body"><strong>${queue[i].category}</strong>: ${queue[i].description}</div>
+              </div>`);
+            } else {
+              $('#queue').append(`<div class="panel panel-default">
+              <div class="panel-heading">${queue[i].username}</div>
+              <div class="panel-body"><strong>${queue[i].category}</strong>: ${queue[i].description}</div>
+              </div>`);
+            }
+          }
+          console.log('response from request: ' + JSON.stringify(resp));
+          $("#addToQueue").prop("disabled",true);
+        }
+      });
+    });
+
+    $('#queue').on('click', '#cancel', function () {
+      console.log('Cancel!');
+      $.ajax({
+        url: 'http://localhost:3000/cancel',
+        method: 'get',
+        success: function(resp) {
+          $('#queue').empty();
+          var queue = resp['queue'];
+          console.log('response queue: ' + queue);
+          for (var i = 0; i < queue.length; i++) {
+            if ($('#userName').text() === queue[i].username) {
+              console.log('username text: ' + $('#userName').text());
+              $('#queue').append(`<div class="panel panel-default">
+              <div class="panel-heading">${queue[i].username} <i id='cancel' style="float:right;color:red" class="fa fa-times-circle" aria-hidden="true"></i></div>
+              <div class="panel-body"><strong>${queue[i].category}</strong>: ${queue[i].description}</div>
+              </div>`);
+            } else {
+              $('#queue').append(`<div class="panel panel-default">
+              <div class="panel-heading">${queue[i].username}</div>
+              <div class="panel-body"><strong>${queue[i].category}</strong>: ${queue[i].description}</div>
+              </div>`);
+            }
+          }
+          $("#addToQueue").prop("disabled",false);
         }
       })
-    }
-  }, 1000*60*60);
+     });
 
-  setInterval(function() {
-    //update with new tas and queue status
+    $('#getPass').on('click', function(evt) {
+      console.log('Get pass!');
+    });
+
+    setInterval(function() {
+      var currentHour = (new Date()).getHours();
+      if (currentHour === 0) {
+        // make post request to reset
+        $.ajax({
+          url:"http://localhost:3000/reset",
+          method:'get',
+          success: function(resp) {
+            //change the queue and the TAs
+          }
+        })
+      }
+    }, 1000*60*60);
+
+    setInterval(function() {
+      //update with new tas and queue status
+    });
   });
 </script>
