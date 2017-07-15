@@ -107,7 +107,7 @@ router.post('/changeStatus', function(req, res) {
       var status = ta["available"];
       ta["available"] = ! status;
       ta.save(function(error) {
-        res.json("error saving", error);
+        res.json(error);
       });
     }
   });
