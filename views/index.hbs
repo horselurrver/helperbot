@@ -12,11 +12,11 @@
   </div>
   <br/>
   <br/>
-  <!-- <label class="switch" style="margin-left:2%">
+  <!--<label class="switch" style="margin-left:2%">
     <input id="toggle" type="checkbox">
     <span class="slider round"></span>
-  </label> -->
-  <a id="button" title="button">Press Me</a>
+  </label>-->
+  <button id="toggle" class="btn btn-warning">Availability</button>
 </div>
 {{/if}}
 
@@ -54,12 +54,11 @@
 <script>
   //load ta and queue --> getAssignments
   $(document).ready(function() {
-
-    $('a#button').click(function(){
-        $(this).toggleClass("down");
-    });
-
-    
+    if (!req.user.isStudent && req.user.available) {
+      $('#toggle').attr('class', 'btn btn-success');
+    } else {
+      $('#toggle').attr('class', 'btn btn-warning');
+    }
     $.ajax({
       url: 'https://ronchon-maison-19725.herokuapp.com/getAssignments',
       method:'get',
@@ -155,6 +154,11 @@
 
     $('#toggle').on('click', function(evt) {
       console.log('toggle button clicked!');
+      if ($('toggle').attr('class') === 'btn btn-warning') {
+        $('#toggle').attr('class', 'btn btn-success')
+      } else {
+        $('#toggle').attr('class', 'btn btn-warning')
+      }
       $.ajax({
         url: 'https://ronchon-maison-19725.herokuapp.com/changeStatus',
         method: 'post',
