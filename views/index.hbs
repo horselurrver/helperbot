@@ -20,7 +20,7 @@
 {{/if}}
 
 {{#if user.isStudent}}
-<div class="tas" style="margin-left:50%;">
+<div class="tas" style="margin-left:45%;">
   <center>
     <!--<div style="display:inline-block;margin-right:5%">
       <img class="taPic" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTZdaIj40vlNy5-KRzeRtBc4nQO3qohNEQdfJydorNEXmUVwVyn"></img>
@@ -143,11 +143,7 @@
         url: 'https://ronchon-maison-19725.herokuapp.com/changeStatus',
         method: 'post',
         success: function(resp) {
-          if (err) {
-            console.log(err);
-          } else {
-            alert('success!');
-          }
+          alert('success');
         }
       });
     });
