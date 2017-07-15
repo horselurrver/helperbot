@@ -127,4 +127,8 @@ router.get('/reset', function(req, res) {
   });
 });
 
+router.get('/getUser', function(req, res) {
+  res.json(req.user);
+})
+
 module.exports = router;
