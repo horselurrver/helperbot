@@ -104,7 +104,8 @@ router.post('/changeStatus', function(req, res) {
   Ta.findById(req.user._id, function(error, ta) {
     if (error) res.json("Can't find TA in /changeStatus post route");
     else {
-      ta.available = ! ta.available;
+      var status = ta["available"];
+      ta["available"] = ! status;
       ta.save(function(error) {
         res.json("error saving", error);
       });
