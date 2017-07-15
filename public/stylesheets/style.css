@@ -150,3 +150,12 @@ input:checked + .slider:before {
     border-right: solid 2px #eaeaea;
     color: black;
     }
+
+#done {
+  background: #fff400;
+  border-top: solid 2px #777;
+  border-left: solid 2px #777;
+  border-bottom:solid 2px  #eaeaea;
+  border-right: solid 2px #eaeaea;
+  color: black;
+}

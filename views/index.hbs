@@ -22,8 +22,9 @@
   <p id='userName' hidden>Thanh Nguyen</p>
   <br/>
 <div style="margin-left:25%">
-  <div id="assignment" style="display:inline-block;margin-right:5%;color:white;font-size:20px;">
-    <img class="taPic" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTZdaIj40vlNy5-KRzeRtBc4nQO3qohNEQdfJydorNEXmUVwVyn"> &nbsp;&nbsp;&nbsp;&nbsp;</img>No current assignment
+  <div  style="display:inline-block;margin-right:5%;color:white;font-size:20px;">
+    <img class="taPic" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTZdaIj40vlNy5-KRzeRtBc4nQO3qohNEQdfJydorNEXmUVwVyn"> &nbsp;&nbsp;&nbsp;&nbsp;</img>
+    <div id="assignment">No current assignment</div>
   </div>
   <br/>
   <br/>
@@ -32,8 +33,8 @@
     <a id="availButton" title="button">Available</a>
   {{else}}
     <a id="availButton" class="down" title="button">Unavailable</a>
+    <button type="button" id="done">Done</button>
   {{/if}}
-
 </div>
 
 
@@ -48,54 +49,29 @@
 <br/>
 <br/>
 
-
-<!-- <center><div class="alert alert-success" style="width:50%">
-  <strong>Heads up!</strong> You've been assigned to TA.
-</div></center>
-
-<div id="queue" class="queueBody" style="height:300px;width:50%;max-height:96%;overflow:auto">
-</div>
-<br/> -->
-
 <script>
   //load ta and queue --> getAssignments
   $(document).ready(function() {
-    var user = null;
-    $.ajax({
-      url: 'http://localhost:3000/getUser',
-      method: 'get',
-      success: function(theUser) {
-        user = theUser;
-        if (!theUser.isStudent && theUser.available) {
-          $('#toggle').attr('class', 'btn btn-success');
-        } else {
-          $('#toggle').attr('class', 'btn btn-warning');
-        }
-      }
-    });
-
     $.ajax({
       url: 'http://localhost:3000/getAssignments',
       method:'get',
       success: function(resp) {
         var tas = resp.tas;
         var queue = resp.queue;
-        console.log('tas: ' + tas);
+        var currentUser = resp.user;
+
         $('.tas').empty();
         $('#queue').empty();
+        if (currentUser.isStudent && currentUser.assignedTA) {
+          $('#assignedAlert').append(`<center><div class="alert alert-success" style="width:50%"><strong>Heads up!</strong> You've been assigned to  ${ta.username}.</div></center>`);
+        }
+        if (! currentUser.isStudent && currentUser.assignedTo) {
+          $('#assignment').text('Assigned to ' + currentUser["assignedTo"]);
+          $('#assignment').addClass('down');
+          $('#done').show();
+        }
         tas.forEach(function(ta) {
           //render each ta
-          if (JSON.stringify(ta.assignedTo) === JSON.stringify(user._id)) {
-            Ta.findOne({assignedTo:user._id}, function(err, ta) {
-              if (err) {
-                console.log(err);
-              } else {
-                $('#assignedAlert').append(`<center><div class="alert alert-success" style="width:50%">
-                  <strong>Heads up!</strong> You've been assigned to ${ta.username}.
-                </div></center>`);
-              }
-            });
-          }
           $('.tas').append(`<div style="display:inline-block;margin-right:5%">
             <img class="taPic" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTZdaIj40vlNy5-KRzeRtBc4nQO3qohNEQdfJydorNEXmUVwVyn"></img>
             <p class="text-with-img">${ta.username} <i style="color:red" class="fa fa-circle" aria-hidden="true"></i></p>
@@ -146,7 +122,6 @@
     });
 
     $('#queue').on('click', '#cancel', function () {
-      console.log('Cancel!');
       $.ajax({
         url: 'http://localhost:3000/cancel',
         method: 'get',
@@ -192,6 +167,17 @@
       });
     });
 
+    $('#done').on('click', function() {
+      $('#done').hide();
+      $.ajax({
+        url: 'http://localhost:3000/done',
+        method: 'post',
+        success: function(resp) {
+          
+        }
+      })
+    })
+
     setInterval(function() {
       var currentHour = (new Date()).getHours();
       if (currentHour === 0) {
@@ -229,9 +215,6 @@
                 <img class="taPic" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTZdaIj40vlNy5-KRzeRtBc4nQO3qohNEQdfJydorNEXmUVwVyn"></img>
                 <p class="text-with-img">${ta.username} <i style="color:red" class="fa fa-circle" aria-hidden="true"></i></p>
               </div>`);
-            }
-            if (ta.username === user.username) {
-              $('#assignment').text('Assigned to ' + ta.assignedTo);
             }
           });
           queue.forEach(function(student) {

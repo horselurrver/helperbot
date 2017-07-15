@@ -77,7 +77,9 @@ router.get('/cancel', function(req, res) {
 // auto route of updating the assigning TA to student who is the front of the queue
 router.get('/getAssignments', function(req, res) {
   if (queue.length >= 1) {
-    Ta.find({}, function(err, tas) {
+    Ta.find({})
+    .populate('assignedTo')
+    .exec(function(err, tas) {
       for (var i = 0; i < tas.length; i++) {
         if (tas[i].available) {
           // pop off
@@ -127,8 +129,15 @@ router.get('/reset', function(req, res) {
   });
 });
 
-router.get('/getUser', function(req, res) {
-  res.json(req.user);
-})
+router.post('/done', function(req, res) {
+  Ta.findById(req.user._id, function(err, ta) {
+    Student.findById(ta.assignedTo, function(err, student) {
+      student["assignedTA"] = {};
+    });
+    ta["assignedTA"] = {};
+    ta["available"] = true;
+  });
+
+});
 
 module.exports = router;
