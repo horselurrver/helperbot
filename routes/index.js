@@ -65,7 +65,18 @@ router.get('/cancel', function(req, res) {
     }
   }
  res.json({queue: queue});
-}
+});
+
+router.get('getAssignments', function(req, res) {
+  Ta.find({}, function(err, tas) {
+    for (var i = 0; i < tas.length; i++) {
+      if (tas[i].available) {
+        // pop off
+        // set properties
+      }
+    }
+  });
+});
 
 router.post('/priority', function(req, res) {
 

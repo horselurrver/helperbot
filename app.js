@@ -81,7 +81,7 @@ function(accessToken, refreshToken, profile, done) {
         var newTA = new Ta ({
           username: profile.displayname,
           available: true,
-          isStudent: false
+          isStudent: false,
         });
         newTA.save(function(err) {
           if (err) {

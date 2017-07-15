@@ -33,7 +33,7 @@ var taSchema = new Schema({
   assignedTo: {
     type: Schema.Types.ObjectId,
     ref: 'Student'
-  }
+  },
 })
 
 var Student = mongoose.model("Student", studentSchema);
