@@ -51,8 +51,8 @@
 
 <script>
   //load ta and queue --> getAssignments
-  var user = null;
   $(document).ready(function() {
+    var user = null;
     $.ajax({
       url: 'https://ronchon-maison-19725.herokuapp.com/getUser',
       method: 'get',
@@ -77,10 +77,23 @@
         $('#queue').empty();
         tas.forEach(function(ta) {
           //render each ta
+<<<<<<< HEAD
           if (ta.assignedTo.equals(user._id)) {
             $('#assignedAlert').append(`<center><div class="alert alert-success" style="width:50%">
               <strong>Heads up!</strong> You've been assigned to ${ta.username}.
               </div></center>`);
+=======
+          if (JSON.stringify(ta.assignedTo) === JSON.stringify(user._id)) {
+            Ta.findOne({assignedTo:user._id}, function(err, ta) {
+              if (err) {
+                console.log(err);
+              } else {
+                $('#assignedAlert').append(`<center><div class="alert alert-success" style="width:50%">
+                  <strong>Heads up!</strong> You've been assigned to ${ta.username}.
+                </div></center>`);
+              }
+            });
+>>>>>>> 5cae0d9e397562194395b86ed21e7237a78f6856
           }
           $('.tas').append(`<div style="display:inline-block;margin-right:5%">
             <img class="taPic" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTZdaIj40vlNy5-KRzeRtBc4nQO3qohNEQdfJydorNEXmUVwVyn"></img>
