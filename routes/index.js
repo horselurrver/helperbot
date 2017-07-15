@@ -35,8 +35,10 @@ router.post('/add', function(req, res) {
   if (req.body.category === '') {
     console.log('error');
   } else {
-    console.log('no errors');
     Student.findByIdAndUpdate(req.user._id, {description: req.body.description, category: req.body.category}, function(error, student) {
+      if (error) {
+        res.json("Error in post request /add");
+      } else {
         queue.push(student);
         queue.sort(function(a, b) {
           return a.priority - b.priority;
@@ -48,15 +50,21 @@ router.post('/add', function(req, res) {
           isFirst: isFirst
         }
         res.json(returnObj);
-      });
-    }
-  });
+      }
+    });
+  }
+});
 
 
 // remove current user from the queue and send back update queue
 router.get('/cancel', function(req, res) {
-  console.log('got the cancel request!');
-  console.log('current queue: ' + queue);
+  // if the student is first in line and cancel, change priority to 2
+  if (queue[0].username === req.user.username) {
+    Student.findByIdAndUpdate(req.user._id, {priority: 2}, function(err) {
+      if (err) res.json("There's an error  in /cancel get route");
+    })
+  }
+  // find the student and delete them from the queue
   for (var i = 0; i < queue.length; i++) {
     if (queue[i].username === req.user.username) {
       console.log('splicing');
@@ -64,6 +72,7 @@ router.get('/cancel', function(req, res) {
       console.log('after splicing');
     }
   }
+<<<<<<< HEAD
  res.json({queue: queue});
 });
 
@@ -79,7 +88,21 @@ router.get('getAssignments', function(req, res) {
 });
 
 router.post('/priority', function(req, res) {
+=======
+  res.json({queue: queue});
+});
+>>>>>>> 93175253d261ee7312f4bae24070b9d0ca6c05db
 
+router.post('/changeStatus', function(req, res) {
+  Ta.findById(req.user._id, function(error, ta) {
+    if (error) res.json("Can't find TA in /changeStatus post route");
+    else {
+      ta.available = ! ta.available;
+      ta.save(function(error) {
+        res.json("error saving", error);
+      });
+    }
+  });
 });
 
 module.exports = router;
