@@ -116,8 +116,8 @@ router.post('/changeStatus', function(req, res) {
 router.get('/reset', function(req, res) {
   queue = [];
   Ta.find(function(err, ta) {
-    if(error) {
-      res.json(error);
+    if(err) {
+      res.json(err);
     } else {
       ta.forEach(function(ta) {
         ta.available = true;
