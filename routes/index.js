@@ -35,10 +35,9 @@ router.post('/add', function(req, res) {
   if (req.body.category === '') {
     console.log('error');
   } else {
-    console.log(req.body);
     Student.findById(req.user._id, function(err, student) {
       if (err) {
-        res.json({'Error':err});
+        res.json(err);
       } else {
         student.description = req.body.description;
         student.category = req.body.category;
@@ -69,14 +68,13 @@ router.get('/cancel', function(req, res) {
   // find the student and delete them from the queue
   for (var i = 0; i < queue.length; i++) {
     if (queue[i].username === req.user.username) {
-      console.log('splicing');
       queue.splice(i, 1);
-      console.log('after splicing');
     }
   }
  res.json({queue: queue});
 });
 
+// auto route of updating the assigning TA to student who is the front of the queue
 router.get('/getAssignments', function(req, res) {
   if (queue.length >= 1) {
     Ta.find({}, function(err, tas) {
@@ -86,6 +84,7 @@ router.get('/getAssignments', function(req, res) {
           var assignedStudent = queue.shift();
           console.log("this is assignedStudent", assignedStudent);
           tas[i]["assignedTo"] = assignedStudent._id;
+          tas[i]["available"] = !tas[i]["available"];
           tas[i].save();
           assignedStudent["assignedTA"] = tas[i]._id;
           assignedStudent.save();
@@ -100,13 +99,12 @@ router.get('/getAssignments', function(req, res) {
   }
 });
 
+// let the ta change the status of their availability
 router.post('/changeStatus', function(req, res) {
   Ta.findById(req.user._id, function(error, ta) {
-    if (error) res.json("Can't find TA in /changeStatus post route");
+    if (error) res.json(error);
     else {
-      console.log('Before setting: ' + ta['available']);
       ta['available'] = ! ta['available'];
-      console.log('After setting: ' + ta['available']);
       ta.save(function(error) {
         res.json(error);
       });
@@ -114,6 +112,7 @@ router.post('/changeStatus', function(req, res) {
   });
 });
 
+// reset the queue and reset the status of the ta
 router.get('/reset', function(req, res) {
   queue = [];
   Ta.find(function(err, ta) {

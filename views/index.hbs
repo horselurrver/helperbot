@@ -12,20 +12,23 @@
   </div>
   <br/>
   <br/>
-  <label class="switch" style="margin-left:2%">
+  <!-- <label class="switch" style="margin-left:2%">
     <input id="toggle" type="checkbox">
     <span class="slider round"></span>
-  </label>
+  </label> -->
+  {{#if user.available}}
+    <a id="availButton" title="button">Available</a>
+  {{else}}
+    <a id="availButton" class="down" title="button">Unavailable</a>
+  {{/if}}
+
 </div>
 {{/if}}
 
 {{#if user.isStudent}}
 <div class="tas" style="margin-left:45%;">
   <center>
-    <!--<div style="display:inline-block;margin-right:5%">
-      <img class="taPic" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTZdaIj40vlNy5-KRzeRtBc4nQO3qohNEQdfJydorNEXmUVwVyn"></img>
-      <p class="text-with-img">Bob Bob <i class="fa fa-circle" aria-hidden="true"></i></p>
-    </div>-->
+    <!-- This is where the Ta profiles will be -->
   </center>
 </div>
 {{/if}}
@@ -54,7 +57,7 @@
   //load ta and queue --> getAssignments
   $(document).ready(function() {
     $.ajax({
-      url: 'https://ronchon-maison-19725.herokuapp.com/getAssignments',
+      url: 'http://localhost:3000/getAssignments',
       method:'get',
       success: function(resp) {
         var tas = resp.tas;
@@ -83,7 +86,7 @@
       console.log('description: ' + $('#desc').val());
       console.log('category: ' + $('#category').val());
       $.ajax({
-        url: 'https://ronchon-maison-19725.herokuapp.com/add',
+        url: 'http://localhost:3000/add',
         method:'post',
         data: {
           description: $('#desc').val(),
@@ -108,7 +111,6 @@
               </div>`);
             }
           }
-          console.log('response from request: ' + JSON.stringify(resp));
           $("#addToQueue").prop("disabled",true);
         }
       });
@@ -117,7 +119,7 @@
     $('#queue').on('click', '#cancel', function () {
       console.log('Cancel!');
       $.ajax({
-        url: 'https://ronchon-maison-19725.herokuapp.com/cancel',
+        url: 'http://localhost:3000/cancel',
         method: 'get',
         success: function(resp) {
           $('#queue').empty();
@@ -146,13 +148,17 @@
       console.log('Get pass!');
     });
 
-    $('#toggle').on('click', function(evt) {
-      console.log('toggle button clicked!');
+    $('#availButton').click(function(){
+      $(this).toggleClass("down");
+      if ($(this).text() === "Unavailable") {
+        $(this).text("Available");
+      } else {
+        $(this).text("Unavailable");
+      }
       $.ajax({
-        url: 'https://ronchon-maison-19725.herokuapp.com/changeStatus',
+        url: 'http://localhost:3000/changeStatus',
         method: 'post',
         success: function(resp) {
-          alert('success');
         }
       });
     });
@@ -162,7 +168,7 @@
       if (currentHour === 0) {
         // make post request to reset
         $.ajax({
-          url:"https://ronchon-maison-19725.herokuapp.com/reset",
+          url:"http://localhost:3000/reset",
           method:'get',
           success: function(resp) {
             //change the queue and the TAs
@@ -174,7 +180,7 @@
     setInterval(function() {
       //update with new tas and queue status
       $.ajax({
-        url: 'https://ronchon-maison-19725.herokuapp.com/getAssignments',
+        url: 'http://localhost:3000/getAssignments',
         method:'get',
         success: function(resp) {
           var tas = resp.tas;
@@ -184,10 +190,17 @@
           $('#queue').empty();
           tas.forEach(function(ta) {
             //render each ta
-            $('.tas').append(`<div style="display:inline-block;margin-right:5%">
-              <img class="taPic" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTZdaIj40vlNy5-KRzeRtBc4nQO3qohNEQdfJydorNEXmUVwVyn"></img>
-              <p class="text-with-img">${ta.username} - ${ta.available} {{#if ta.available}}<i style="color:green" class="fa fa-circle" aria-hidden="true"></i>{{else}}<i style="color:blue" class="fa fa-circle" aria-hidden="true"></i>{{/if}}</p>
-            </div>`);
+            if (ta.available) {
+              $('.tas').append(`<div style="display:inline-block;margin-right:5%">
+                <img class="taPic" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTZdaIj40vlNy5-KRzeRtBc4nQO3qohNEQdfJydorNEXmUVwVyn"></img>
+                <p class="text-with-img">${ta.username} <i style="color:green" class="fa fa-circle" aria-hidden="true"></i></p>
+              </div>`);
+            } else {
+              $('.tas').append(`<div style="display:inline-block;margin-right:5%">
+                <img class="taPic" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTZdaIj40vlNy5-KRzeRtBc4nQO3qohNEQdfJydorNEXmUVwVyn"></img>
+                <p class="text-with-img">${ta.username} <i style="color:red" class="fa fa-circle" aria-hidden="true"></i></p>
+              </div>`);
+            }
           });
           queue.forEach(function(student) {
             $('#queue').append(`<div class="panel panel-default">
