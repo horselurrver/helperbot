@@ -12,11 +12,19 @@
   </div>
   <br/>
   <br/>
+<<<<<<< HEAD
   <label class="switch" style="margin-left:2%">
     <input id="toggle" type="checkbox">
     <span class="slider round"></span>
   </label>
   <!-- <a id="button" title="button">Press Me</a> -->
+=======
+  <!--<label class="switch" style="margin-left:2%">
+    <input id="toggle" type="checkbox">
+    <span class="slider round"></span>
+  </label>-->
+  <button id="toggle" class="btn btn-warning">Availability</button>
+>>>>>>> d038e19fef96922288be67a491a7af0297716c3a
 </div>
 {{/if}}
 
@@ -33,9 +41,12 @@
 <br/>
 <br/>
 
-<center><div class="alert alert-success" style="width:50%">
-  <strong>Heads up!</strong> You've been assigned to TA.
-</div></center>
+<div id="assignedAlert">
+  <!--<center><div class="alert alert-success" style="width:50%">
+    <strong>Heads up!</strong> You've been assigned to TA.
+  </div></center>-->
+</div>
+
 <div id="queue" class="queueBody" style="height:300px;width:50%;max-height:96%;overflow:auto">
 </div>
 <br/>
@@ -54,12 +65,20 @@
 <script>
   //load ta and queue --> getAssignments
   $(document).ready(function() {
+<<<<<<< HEAD
 
     $('a#button').click(function(){
         $(this).toggleClass("down");
     });
 
 
+=======
+    if (!req.user.isStudent && req.user.available) {
+      $('#toggle').attr('class', 'btn btn-success');
+    } else {
+      $('#toggle').attr('class', 'btn btn-warning');
+    }
+>>>>>>> d038e19fef96922288be67a491a7af0297716c3a
     $.ajax({
       url: 'https://ronchon-maison-19725.herokuapp.com/getAssignments',
       method:'get',
@@ -71,6 +90,17 @@
         $('#queue').empty();
         tas.forEach(function(ta) {
           //render each ta
+          if (ta.assignedTo.equals(req.user._id)) {
+            Ta.findOne({assignedTo:req.user._id}, function(err, ta) {
+              if (err) {
+                console.log(err);
+              } else {
+                $('#assignedAlert').append(`<center><div class="alert alert-success" style="width:50%">
+                  <strong>Heads up!</strong> You've been assigned to ${ta.username}.
+                </div></center>`);
+              }
+            });
+          }
           $('.tas').append(`<div style="display:inline-block;margin-right:5%">
             <img class="taPic" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTZdaIj40vlNy5-KRzeRtBc4nQO3qohNEQdfJydorNEXmUVwVyn"></img>
             <p class="text-with-img">${ta.username} {{#if ta.available}}<i style="color:green" class="fa fa-circle" aria-hidden="true"></i>{{else}}<i style="color:red" class="fa fa-circle" aria-hidden="true"></i>{{/if}}</p>
@@ -155,6 +185,11 @@
 
     $('#toggle').on('click', function(evt) {
       console.log('toggle button clicked!');
+      if ($('toggle').attr('class') === 'btn btn-warning') {
+        $('#toggle').attr('class', 'btn btn-success')
+      } else {
+        $('#toggle').attr('class', 'btn btn-warning')
+      }
       $.ajax({
         url: 'https://ronchon-maison-19725.herokuapp.com/changeStatus',
         method: 'post',

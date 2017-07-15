@@ -84,8 +84,8 @@ router.get('/getAssignments', function(req, res) {
         if (tas[i].available) {
           // pop off
           var assignedStudent = queue.shift();
-          console.log("this is assignedStudent", assignedStudent);
           tas[i]["assignedTo"] = assignedStudent._id;
+          tas[i]["available"] = ! tas[i]["available"];
           tas[i].save();
           assignedStudent["assignedTA"] = tas[i]._id;
           assignedStudent.save();
@@ -104,9 +104,7 @@ router.post('/changeStatus', function(req, res) {
   Ta.findById(req.user._id, function(error, ta) {
     if (error) res.json("Can't find TA in /changeStatus post route");
     else {
-      console.log('Before setting: ' + ta['available']);
       ta['available'] = ! ta['available'];
-      console.log('After setting: ' + ta['available']);
       ta.save(function(error) {
         res.json(error);
       });
