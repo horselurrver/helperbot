@@ -65,20 +65,11 @@
 <script>
   //load ta and queue --> getAssignments
   $(document).ready(function() {
-<<<<<<< HEAD
-
-    $('a#button').click(function(){
-        $(this).toggleClass("down");
-    });
-
-
-=======
     if (!req.user.isStudent && req.user.available) {
       $('#toggle').attr('class', 'btn btn-success');
     } else {
       $('#toggle').attr('class', 'btn btn-warning');
     }
->>>>>>> d038e19fef96922288be67a491a7af0297716c3a
     $.ajax({
       url: 'https://ronchon-maison-19725.herokuapp.com/getAssignments',
       method:'get',
