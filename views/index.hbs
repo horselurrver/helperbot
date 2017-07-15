@@ -18,9 +18,10 @@
     <a href="/logout" class="logout" role="button">Logout</a>
 <br/>
 
-  <center><h1 style="color:white">Welcome, Thanh Nguyen!</h1></center>
-  <p id='userName' hidden>Thanh Nguyen</p>
-  <br/>
+<center><h1 style="color:white">Welcome, {{user.username}}</h1></center>
+<p id='userName' hidden>{{user.username}}</p>
+<br/>
+
 <div style="margin-left:25%">
   <div  style="display:inline-block;margin-right:5%;color:white;font-size:20px;">
     <img class="taPic" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTZdaIj40vlNy5-KRzeRtBc4nQO3qohNEQdfJydorNEXmUVwVyn"> &nbsp;&nbsp;&nbsp;&nbsp;</img>
@@ -173,7 +174,7 @@
         url: 'http://localhost:3000/done',
         method: 'post',
         success: function(resp) {
-          
+
         }
       })
     })
