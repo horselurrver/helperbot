@@ -58,6 +58,8 @@
 <script>
   $('#addToQueue').on('click', function(evt) {
     evt.preventDefault();
+    console.log('description: ' + $('#desc').val());
+    console.log('category: ' + $('category').val());
     $.ajax({
       url: 'http://localhost:3000/add',
       method:'post',
@@ -68,11 +70,20 @@
       success: function(resp) {
         var queue = resp['queue'];
         $('#queue').empty();
+        $('#desc').val('');
+        $('#category').val('');
         for (var i = 0; i < queue.length; i++) {
-          $('#queue').append(`<div class="panel panel-default">
-          <div class="panel-heading">${queue[i].username}</div>
-          <div class="panel-body"><strong>${queue[i].category}</strong>: ${queue[i].description}</div>
-          </div>`);
+          if (i === 0 && resp.isFirst) {
+            $('#queue').append(`<div class="panel panel-default">
+            <div class="panel-heading">${queue[i].username}</div>
+            <div class="panel-body"><strong>${queue[i].category}</strong>: ${queue[i].description}akajsdfs</div>
+            </div>`);
+          } else {
+            $('#queue').append(`<div class="panel panel-default">
+            <div class="panel-heading">${queue[i].username}</div>
+            <div class="panel-body"><strong>${queue[i].category}</strong>: ${queue[i].description}</div>
+            </div>`);
+          }
         }
         console.log('response from request: ' + JSON.stringify(resp));
       }

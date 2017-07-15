@@ -31,10 +31,11 @@ router.get('/index', function(req, res) {
 
 // this adds the current user to the queue and send back the updated queue
 // check if the current user is first, if so, show the priority button
-router.get('/add', function(req, res) {
-  if (req.body.category.length === 0) {
-    res.json("Category is empty");
+router.post('/add', function(req, res) {
+  if (req.body.category === '') {
+    console.log('error');
   } else {
+    console.log('no errors');
     Student.findByIdAndUpdate(req.user._id, {description: req.body.description, category: req.body.category}, function(error, student) {
       if (queue.length === 0 || queue.length === 1) {
         queue.push(student);
@@ -58,6 +59,13 @@ router.get('/add', function(req, res) {
         }
         res.json(returnObj);
       }
+      var isFirst = false;
+      if (queue[0].username === req.user.username) isFirst = true;
+      var returnObj = {
+        queue: queue,
+        isFirst: isFirst
+      }
+      res.json(returnObj);
     });
   }
 });
