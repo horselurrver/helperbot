@@ -1,6 +1,7 @@
 <a href="/logout" class="logout" role="button">Logout</a>
 <br/>
 <center><h1 style="color:white">Welcome, {{user}}!</h1></center>
+<p id='userName' hidden>{{user}}</p>
 <br/>
 <!--<div style="margin-left:25%">
   <div style="display:inline-block;margin-right:5%;color:white;font-size:20px;">
@@ -59,7 +60,7 @@
   $('#addToQueue').on('click', function(evt) {
     evt.preventDefault();
     console.log('description: ' + $('#desc').val());
-    console.log('category: ' + $('category').val());
+    console.log('category: ' + $('#category').val());
     $.ajax({
       url: 'http://localhost:3000/add',
       method:'post',
@@ -75,7 +76,12 @@
         for (var i = 0; i < queue.length; i++) {
           if (i === 0 && resp.isFirst) {
             $('#queue').append(`<div class="panel panel-default">
-            <div class="panel-heading">${queue[i].username}</div>
+            <div class="panel-heading">${queue[i].username} <i id='cancel' style="float:right;color:red" class="fa fa-times-circle" aria-hidden="true"></i></div>
+            <div class="panel-body"><strong>${queue[i].category}</strong>: ${queue[i].description}akajsdfs<button style="float:right" class="btn btn-default">Get Pass</button></div>
+            </div>`);
+          } else if ($('#userName').text() === queue[i].username) {
+            $('#queue').append(`<div class="panel panel-default">
+            <div class="panel-heading">${queue[i].username} <i id='cancel' style="float:right;color:red" class="fa fa-times-circle" aria-hidden="true"></i></div>
             <div class="panel-body"><strong>${queue[i].category}</strong>: ${queue[i].description}akajsdfs</div>
             </div>`);
           } else {
@@ -86,13 +92,30 @@
           }
         }
         console.log('response from request: ' + JSON.stringify(resp));
+        $("#addToQueue").prop("disabled",true);
       }
     });
   });
 
-  $('#cancel').on('click', function(evt) {
+  $('#queue').on('click', '#cancel', function () {
     console.log('Cancel!');
-  });
+    $.ajax({
+      url: 'http://localhost:3000/cancel',
+      method: 'get',
+      success: function(resp) {
+        $('#queue').empty();
+        var queue = resp['queue'];
+        console.log('response queue: ' + queue);
+        for (var i = 0; i < queue.length; i++) {
+          $('#queue').append(`<div class="panel panel-default">
+          <div class="panel-heading">${queue[i].username}</div>
+          <div class="panel-body"><strong>${queue[i].category}</strong>: ${queue[i].description}</div>
+          </div>`);
+        }
+        $("#addToQueue").prop("disabled",false);
+      }
+    })
+   });
 
   $('#getPass').on('click', function(evt) {
     console.log('Get pass!');

@@ -37,13 +37,13 @@ router.post('/add', function(req, res) {
   } else {
     console.log('no errors');
     Student.findByIdAndUpdate(req.user._id, {description: req.body.description, category: req.body.category}, function(error, student) {
-      if (queue.length === 0 || queue.length === 1) {
-        queue.push(req.user);
+    /*  if (queue.length === 0 || queue.length === 1) {
+        queue.push(student);
       } else {
         // if (student.priority === 3) { // if student has no priority just add to end of queue
         //   queue.push(req.user);
         // } else if (student.priority === 2) { // if student is priority 2, find the first person with priority 3 and add them in before this person
-          queue.push(req.user);
+          queue.push(student);
           var key;
           for (var j = 1; j < queue.length; j++) {
             key = queue[j].priority;
@@ -54,28 +54,35 @@ router.post('/add', function(req, res) {
             }
             queue[i + 1] = key;
           }
+        }*/
+        queue.push(student);
+        queue.sort(function(a, b) {
+          return a.priority - b.priority;
+        });
+        var isFirst = false;
+        if (queue[0].username === req.user.username) isFirst = true;
+        var returnObj = {
+          queue: queue,
+          isFirst: isFirst
         }
-      }
-      var isFirst = false;
-      if (queue[0].username === req.user.username) isFirst = true;
-      var returnObj = {
-        queue: queue,
-        isFirst: isFirst
-      }
-      res.json(returnObj);
-    });
-  }
-});
+        res.json(returnObj);
+      });
+    }
+  });
+
 
 // remove current user from the queue and send back update queue
-// check if current user is first, if so, show the priority button
-router.post('/cancel', function(req, res) {
-  var indexOfCurrentUser = queue.indexOf(req.user);
-  if (indexOfCurrentUser === 0) {
-    Student.findByIdAndUpdate()
+router.get('/cancel', function(req, res) {
+  console.log('got the cancel request!');
+  console.log('current queue: ' + queue);
+  for (var i = 0; i < queue.length; i++) {
+    if (queue[i].username === req.user.username) {
+      console.log('splicing');
+      queue.splice(i, 1);
+      console.log('after splicing');
+    }
   }
-  // queue.splice(indexOfCurrentUser, 1);
-  // res.json({queue: queue});
+ res.json({queue: queue});
 });
 
 //
