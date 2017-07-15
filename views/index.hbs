@@ -18,25 +18,9 @@
     <a href="/logout" class="logout" role="button">Logout</a>
 <br/>
 
-<center><h1 style="color:white">Welcome, {{user.username}}</h1></center>
-<p id='userName' hidden>{{user.username}}</p>
-<br/>
-
-<div style="margin-left:25%">
-  <div  style="display:inline-block;margin-right:5%;color:white;font-size:20px;">
-    <img class="taPic" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTZdaIj40vlNy5-KRzeRtBc4nQO3qohNEQdfJydorNEXmUVwVyn"> &nbsp;&nbsp;&nbsp;&nbsp;</img>
-    <div id="assignment">No current assignment</div>
-  </div>
+  <center><h1 style="color:white">Welcome, {{user.username}}!</h1></center>
+  <p id='userName' hidden>{{user.username}}</p>
   <br/>
-  <br/>
-
-  {{#if user.available}}
-    <a id="availButton" title="button">Available</a>
-  {{else}}
-    <a id="availButton" class="down" title="button">Unavailable</a>
-    <button type="button" id="done">Done</button>
-  {{/if}}
-</div>
 
 
 {{#if user.isStudent}}
@@ -44,11 +28,75 @@
   <center>
     <!-- This is where the Ta profiles will be -->
   </center>
+</div>
+{{else}}
+  <div style="margin-left:25%">
+    <div  style="display:inline-block;margin-right:5%;color:white;font-size:20px;">
+    <img class="taPic" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTZdaIj40vlNy5-KRzeRtBc4nQO3qohNEQdfJydorNEXmUVwVyn"> &nbsp;&nbsp;&nbsp;&nbsp;</img>
+    <div id="assignment">No current assignment</div>
+    </div>
+  <br/>
+  <br/>
 
+  y
+</div>
+
+{{/if}}
+<br/>
+<br/>
+
+{{#if user.isStudent}}
+{{else}}
+<div style="margin-left:25%">
+  <div style="display:inline-block;margin-right:5%;color:white;font-size:20px;">
+    <img class="taPic" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTZdaIj40vlNy5-KRzeRtBc4nQO3qohNEQdfJydorNEXmUVwVyn"> &nbsp;&nbsp;&nbsp;&nbsp;No current jobs</img>
+  </div>
+  <br/>
+  <br/>
+
+  <!--<label class="switch" style="margin-left:2%">
+    <input id="toggle" type="checkbox">
+    <span class="slider round"></span>
+  </label>-->
+  <button id="toggle" class="btn btn-warning">Availability</button>
+
+</div>
+{{/if}}
+
+{{#if user.isStudent}}
+<div class="tas" style="margin-left:45%;">
+  <center>
+    <!--<div style="display:inline-block;margin-right:5%">
+      <img class="taPic" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTZdaIj40vlNy5-KRzeRtBc4nQO3qohNEQdfJydorNEXmUVwVyn"></img>
+      <p class="text-with-img">Bob Bob <i class="fa fa-circle" aria-hidden="true"></i></p>
+    </div>-->
+  </center>
 </div>
 {{/if}}
 <br/>
 <br/>
+
+<div id="assignedAlert">
+  <!--<center><div class="alert alert-success" style="width:50%">
+    <strong>Heads up!</strong> You've been assigned to TA.
+  </div></center>-->
+</div>
+
+<div id="queue" class="queueBody" style="height:300px;width:50%;max-height:96%;overflow:auto">
+</div>
+<br/>
+
+{{#if user.isStudent}}
+<center><form class="form-inline">
+  <div class="input-group" style="width:20%">
+    <input id="desc" type="text" class="form-control" placeholder="(Optional) Brief description">
+  </div>
+  <div class="input-group" style="width:20%">
+    <input id="category" type="text" class="form-control" placeholder="(Optional) Category">
+  </div>
+  <button id="addToQueue" class="btn btn-primary">Add to Queue</button>
+</form></center>
+{{/if}}
 
 <script>
   //load ta and queue --> getAssignments
@@ -170,6 +218,8 @@
 
     $('#done').on('click', function() {
       $('#done').hide();
+      $('#availButton').removeClass('done');
+      $('#availButton').text('Available');
       $.ajax({
         url: 'http://localhost:3000/done',
         method: 'post',
