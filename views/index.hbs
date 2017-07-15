@@ -58,19 +58,21 @@
 {{/if}}
 <script>
   //load ta and queue --> getAssignments
+  var user = null;
   $(document).ready(function() {
     $.ajax({
       url: 'https://ronchon-maison-19725.herokuapp.com/getUser',
       method: 'get',
-      success: function(user) {
-        if (!user.isStudent && user.available) {
+      success: function(theUser) {
+        user = theUser;
+        if (!theUser.isStudent && theUser.available) {
           $('#toggle').attr('class', 'btn btn-success');
         } else {
           $('#toggle').attr('class', 'btn btn-warning');
         }
       }
     });
-    
+
     $.ajax({
       url: 'https://ronchon-maison-19725.herokuapp.com/getAssignments',
       method:'get',
@@ -82,8 +84,8 @@
         $('#queue').empty();
         tas.forEach(function(ta) {
           //render each ta
-          if (ta.assignedTo.equals(req.user._id)) {
-            Ta.findOne({assignedTo:req.user._id}, function(err, ta) {
+          if (ta.assignedTo.equals(theUser._id)) {
+            Ta.findOne({assignedTo:theUser._id}, function(err, ta) {
               if (err) {
                 console.log(err);
               } else {
@@ -186,7 +188,6 @@
         url: 'https://ronchon-maison-19725.herokuapp.com/changeStatus',
         method: 'post',
         success: function(resp) {
-          alert('success');
         }
       });
     });
