@@ -39,13 +39,13 @@
   <strong>Heads up!</strong> You've been assigned to TA.
 </div></center>
 <div class="queueBody" style="height:300px;width:50%;overflow-y:scroll">
-  
+
 </div>
 <br/>
 
 <center><form class="form-inline">
   <div class="input-group" style="width:20%">
-    <input type="text" class="form-control" placeholder="(Optional) Brief description">
+    <input id="desc" type="text" class="form-control" placeholder="(Optional) Brief description">
   </div>
   <div class="btn-group">
     <i class="dropdown-arrow dropdown-arrow-inverse"></i>
@@ -73,7 +73,8 @@
       success: function(resp) {
         var queue = resp.queue;
         var isFirst = resp.isFirst;
-
+        console.log('Description: ' );
+        console.log('Category: ' + )''
       }
     });
   });

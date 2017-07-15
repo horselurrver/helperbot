@@ -15,7 +15,9 @@ var studentSchema = new Schema({
     type: Number,
     default: 3
   },
-  lastCancel: Date
+  lastCancel: Date,
+  description: String,
+  category: String
 });
 
 var taSchema = new Schema({
@@ -34,26 +36,10 @@ var taSchema = new Schema({
   }
 })
 
-var requestSchema = new Schema({
-  owner: {
-    type: Schema.Types.ObjectId,
-    ref: 'Student'
-  },
-  category: {
-    type: String,
-    enum: ['Debugging', 'Concept', 'Clarification']
-  },
-  briefDesc: {
-    type: String
-  }
-});
-
 var Student = mongoose.model("Student", studentSchema);
 var Ta = mongoose.model("TA", taSchema);
-var Request = mongoose.model("Request", requestSchema);
 
 module.exports = {
   Student: Student,
   Ta: Ta,
-  Request: Request
 }
